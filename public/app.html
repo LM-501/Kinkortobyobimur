@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>কিংকর্তব্যবিমূঢ়</title>
+<style>
+:root{--bg:#0d0a1a;--card:rgba(255,255,255,.055);--bd:rgba(255,255,255,.12);--tx:#f5f1ff;--mu:#a9a0c9;--p:#ff6ec7;--v:#8b6cff;--c:#2ee6d6;--g:#ffd166;--ok:#3ddc97}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Noto Sans Bengali","Hind Siliguri",system-ui,sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;background:radial-gradient(900px 500px at 8% -10%,rgba(139,108,255,.35),transparent 60%),radial-gradient(800px 500px at 110% 110%,rgba(255,110,199,.25),transparent 60%);z-index:0;pointer-events:none}
+.orb{position:fixed;border-radius:50%;filter:blur(70px);opacity:.3;z-index:0;animation:float 16s ease-in-out infinite}
+.o1{width:300px;height:300px;background:var(--v);top:10%;left:-100px}.o2{width:260px;height:260px;background:var(--p);bottom:5%;right:-80px;animation-delay:-6s}
+@keyframes float{50%{transform:translate(50px,-30px) scale(1.12)}}
+.wrap{position:relative;z-index:1;max-width:1120px;margin:auto;padding:22px 16px 60px}
+
+/* brand */
+.brand{text-align:center;padding:26px 0 8px;animation:drop .9s cubic-bezier(.2,.8,.2,1) both}
+.brand h1{font-size:clamp(30px,6vw,54px);font-weight:800;background:linear-gradient(90deg,var(--p),var(--g),var(--c),var(--p));background-size:300% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 6s linear infinite}
+.brand .tag{color:var(--mu);margin-top:6px;font-style:italic;min-height:24px}
+.brand .tag span{display:inline-block;transition:opacity .4s}
+@keyframes shine{to{background-position:300% center}}
+@keyframes drop{from{opacity:0;transform:translateY(-24px)}}
+
+/* icons */
+.ic{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.ic.lg{width:34px;height:34px}
+
+/* highlight */
+#hl{display:none;margin:18px 0;padding:16px 20px;border-radius:20px;background:linear-gradient(120deg,rgba(255,110,199,.22),rgba(139,108,255,.22));border:1px solid var(--p);box-shadow:0 0 36px rgba(255,110,199,.3);align-items:center;gap:12px;animation:glow 2.4s ease-in-out infinite}
+#hl.show{display:flex}
+@keyframes glow{50%{box-shadow:0 0 56px rgba(255,110,199,.55)}}
+
+/* nav */
+nav{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;margin:16px 0 24px}
+.tab{display:inline-flex;align-items:center;gap:8px;position:relative;overflow:hidden;background:var(--card);border:1px solid var(--bd);color:var(--tx);padding:9px 15px;border-radius:14px;cursor:pointer;font:inherit;font-size:14.5px;transition:transform .3s cubic-bezier(.3,1.5,.5,1),border-color .3s,background .3s}
+.tab:hover{transform:translateY(-4px) rotate(-1deg);border-color:var(--c)}
+.tab.on{background:linear-gradient(120deg,var(--v),var(--p));border-color:transparent;box-shadow:0 10px 26px rgba(139,108,255,.45)}
+.tab .ic{transition:transform .5s}.tab:hover .ic{transform:rotate(-18deg) scale(1.15)}
+
+.pg{display:none}.pg.on{display:block;animation:pageIn .6s cubic-bezier(.2,.8,.2,1) both}
+@keyframes pageIn{from{opacity:0;transform:translateY(22px) scale(.985)}}
+
+.card{background:var(--card);border:1px solid var(--bd);border-radius:22px;padding:22px;margin-bottom:18px;backdrop-filter:blur(12px);transition:transform .35s,box-shadow .35s,border-color .35s;animation:rise .6s ease both;position:relative;overflow:hidden}
+.card:hover{transform:translateY(-4px);box-shadow:0 18px 44px rgba(0,0,0,.4);border-color:rgba(46,230,214,.35)}
+.card h2{font-size:20px;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.card h2 .ic{color:var(--c)}
+@keyframes rise{from{opacity:0;transform:translateY(16px)}}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:18px}@media(max-width:760px){.g2{grid-template-columns:1fr}}
+
+input,select,textarea{width:100%;padding:11px 13px;border-radius:13px;border:1px solid var(--bd);background:rgba(0,0,0,.3);color:var(--tx);font:inherit;font-size:15px;margin-bottom:10px;transition:border-color .25s,box-shadow .25s}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--c);box-shadow:0 0 0 4px rgba(46,230,214,.15)}
+option{background:#1a1433}textarea{resize:vertical;min-height:76px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.row>*{flex:1;min-width:120px}.row>.nf{flex:0 0 auto;min-width:0}
+
+button{font:inherit}
+.btn{position:relative;overflow:hidden;display:inline-flex;align-items:center;gap:7px;border:none;padding:11px 18px;border-radius:13px;background:linear-gradient(100deg,var(--v),var(--p));color:#fff;font-weight:600;cursor:pointer;transition:transform .25s cubic-bezier(.3,1.5,.5,1),box-shadow .3s}
+.btn::before{content:"";position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);transition:left .6s}
+.btn:hover{transform:translateY(-3px) scale(1.04);box-shadow:0 12px 28px rgba(255,110,199,.4)}
+.btn:hover::before{left:130%}
+.btn:active{transform:scale(.93)}
+.btn.ghost{background:transparent;border:1px solid var(--bd)}
+.btn.teal{background:linear-gradient(100deg,#0fb5a7,var(--c))}
+.btn.red{background:linear-gradient(100deg,#ff4d6d,#ff8fa3)}
+.btn.sm{padding:6px 11px;font-size:13px;border-radius:10px}
+
+/* timer */
+.clock{font-size:clamp(42px,9vw,84px);font-weight:800;text-align:center;font-variant-numeric:tabular-nums;margin:12px 0;background:linear-gradient(90deg,var(--c),var(--v));-webkit-background-clip:text;background-clip:text;color:transparent;transition:transform .3s}
+.clock.run{animation:beat 1s ease-in-out infinite}@keyframes beat{50%{transform:scale(1.035)}}
+.ring{width:150px;height:150px;margin:0 auto 10px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--c) var(--deg,0deg),rgba(255,255,255,.08) 0);transition:--deg .3s;animation:spin 14s linear infinite;animation-play-state:paused}
+.ring.run{animation-play-state:running}@keyframes spin{to{transform:rotate(360deg)}}
+.ring span{width:118px;height:118px;border-radius:50%;background:var(--bg);display:grid;place-items:center;animation:spinR 14s linear infinite;animation-play-state:inherit}@keyframes spinR{to{transform:rotate(-360deg)}}
+.laps{list-style:none;margin-top:14px}
+.laps li{display:flex;justify-content:space-between;padding:9px 12px;border-radius:12px;background:rgba(0,0,0,.25);margin-bottom:6px;animation:rise .4s ease both}
+
+/* tour */
+table{width:100%;border-collapse:collapse;margin-top:8px}th,td{padding:9px 8px;border-bottom:1px solid var(--bd);text-align:left;font-size:14px}th{color:var(--mu);font-weight:500}
+.bar{height:10px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden;margin:4px 0 12px}
+.bar>div{height:100%;width:0;background:linear-gradient(90deg,var(--c),var(--v));transition:width 1s cubic-bezier(.2,.8,.2,1)}
+.stat{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px dashed var(--bd);font-size:14.5px;flex-wrap:wrap}
+.total{font-size:30px;font-weight:800;color:var(--g)}
+.chip{display:inline-flex;gap:6px;align-items:center;padding:5px 11px;border-radius:99px;background:rgba(255,255,255,.07);border:1px solid var(--bd);margin:3px;font-size:13.5px}
+
+/* study */
+.subj{margin-bottom:14px}.subj h3{color:var(--c);margin-bottom:8px;font-size:16px}
+.topic{display:flex;align-items:center;gap:11px;padding:9px 12px;border-radius:13px;background:rgba(0,0,0,.22);margin-bottom:6px;cursor:pointer;transition:transform .25s,background .3s}
+.topic:hover{transform:translateX(8px);background:rgba(255,255,255,.07)}
+.topic input{width:auto;margin:0;accent-color:var(--ok);transform:scale(1.25)}
+.topic.done span{text-decoration:line-through;opacity:.5}
+.pbar{height:9px;background:rgba(255,255,255,.08);border-radius:99px;overflow:hidden;margin:8px 0 14px}.pbar div{height:100%;width:0;background:linear-gradient(90deg,var(--ok),var(--c));transition:width .7s}
+
+/* quiz */
+.q{padding:16px;border-radius:16px;background:rgba(0,0,0,.22);animation:rise .4s ease both}
+.opt{display:block;padding:10px 13px;border-radius:12px;border:1px solid var(--bd);margin:7px 0;cursor:pointer;transition:transform .25s,background .25s}
+.opt:hover{transform:translateX(6px);background:rgba(255,255,255,.07)}
+.opt.ok{background:rgba(61,220,151,.25);border-color:var(--ok)}.opt.no{background:rgba(255,77,109,.25);border-color:#ff4d6d}
+.score{font-size:30px;font-weight:800;text-align:center;color:var(--g);margin:10px 0;animation:pop .7s cubic-bezier(.3,1.7,.5,1) both}@keyframes pop{from{transform:scale(.3);opacity:0}}
+
+/* feed */
+.post{border-left:3px solid var(--p)}
+.meta{display:flex;justify-content:space-between;color:var(--mu);font-size:13px;margin-bottom:8px;flex-wrap:wrap;gap:6px}
+.meta b{color:var(--c)}
+.post img{max-width:100%;border-radius:16px;margin-top:10px;transition:transform .5s}.post img:hover{transform:scale(1.02) rotate(-.5deg)}
+.react{display:flex;gap:8px;margin-top:12px}
+.react button{display:inline-flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--bd);color:var(--tx);border-radius:99px;padding:5px 13px;cursor:pointer;transition:transform .25s}
+.react button:hover{transform:scale(1.12) rotate(-3deg)}.react .ic{width:16px;height:16px}
+
+.mi{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:13px;border-radius:15px;background:rgba(0,0,0,.22);margin-bottom:9px;animation:rise .4s ease both;transition:transform .25s}
+.mi:hover{transform:translateX(5px)}
+.mi .d{color:var(--g);font-weight:600;font-size:14px}
+
+/* gallery */
+.drop{border:2px dashed rgba(46,230,214,.45);border-radius:20px;padding:26px;text-align:center;color:var(--mu);transition:all .3s;cursor:pointer;margin-bottom:12px}
+.drop.over{border-color:var(--p);background:rgba(255,110,199,.08);transform:scale(1.02)}
+.drop .ic{width:38px;height:38px;color:var(--c);margin-bottom:6px;animation:bob 2s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-8px)}}
+.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;perspective:800px}
+.gal figure{position:relative;border-radius:18px;overflow:hidden;aspect-ratio:1;background:rgba(0,0,0,.3);animation:cardIn .8s cubic-bezier(.2,.8,.2,1) both,sway 5s ease-in-out infinite;animation-delay:var(--d),var(--d);transition:box-shadow .3s}
+.gal figure:hover{box-shadow:0 14px 34px rgba(255,110,199,.35);animation-play-state:paused}
+@keyframes cardIn{from{opacity:0;transform:translateY(60px) rotateX(-35deg) scale(.8)}}
+@keyframes sway{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-7px) rotate(var(--r))}}
+.gal img{width:100%;height:100%;object-fit:cover;transition:transform .6s}.gal figure:hover img{transform:scale(1.12) rotate(2deg)}
+.gal figcaption{position:absolute;left:0;right:0;bottom:0;padding:22px 9px 8px;background:linear-gradient(transparent,rgba(0,0,0,.9));font-size:13px;transform:translateY(40%);opacity:0;transition:.4s}
+.gal figure:hover figcaption{transform:none;opacity:1}
+.gal .x{position:absolute;top:7px;right:7px;opacity:0;transition:opacity .3s;padding:4px 8px}.gal figure:hover .x{opacity:1}
+
+.empty{color:var(--mu);text-align:center;padding:16px}
+.car-cap{text-align:center;margin-bottom:8px;min-height:50px}
+.car-cap b{display:block;font-size:19px;color:var(--g)}
+.car-cap span{color:var(--mu);font-size:13px}
+#gal{position:relative;height:330px;perspective:1000px;touch-action:pan-y;user-select:none;-webkit-user-select:none;cursor:grab;overflow:hidden}
+#gal:active{cursor:grabbing}
+.slide{position:absolute;left:50%;top:50%;width:230px;height:230px;border-radius:50%;overflow:hidden;border:3px solid rgba(255,255,255,.15);box-shadow:0 10px 30px rgba(0,0,0,.4);transition:transform .6s cubic-bezier(.2,.8,.2,1),opacity .6s}
+.slide img{width:100%;height:100%;object-fit:cover;pointer-events:none;-webkit-user-drag:none}
+.slide.center{border-color:var(--p);box-shadow:0 0 50px rgba(255,110,199,.5);cursor:zoom-in;animation:breathe 3s ease-in-out infinite}
+@keyframes breathe{50%{box-shadow:0 0 75px rgba(255,110,199,.75)}}
+.gl-row{display:flex;justify-content:center;gap:10px;margin-top:10px;flex-wrap:wrap}
+.thumbs{display:flex;gap:9px;overflow-x:auto;justify-content:center;padding:12px 4px 4px}
+.th{width:48px;height:48px;border-radius:50%;object-fit:cover;cursor:pointer;opacity:.45;border:2px solid transparent;transition:transform .3s,opacity .3s,border-color .3s;flex:none}
+.th:hover{transform:scale(1.15);opacity:.9}
+.th.on{opacity:1;border-color:var(--c);transform:scale(1.18)}
+#lb{position:fixed;inset:0;background:rgba(5,3,15,.92);display:none;align-items:center;justify-content:center;flex-direction:column;gap:14px;z-index:1001;padding:20px}
+#lb.show{display:flex;animation:fi .3s}
+#lb img{max-width:min(90vw,560px);max-height:68vh;border-radius:26px;box-shadow:0 0 60px rgba(255,110,199,.4);animation:zoom .5s cubic-bezier(.3,1.4,.5,1)}
+
+/* popup */
+#pbg{position:fixed;inset:0;background:rgba(5,3,15,.72);backdrop-filter:blur(7px);display:none;align-items:center;justify-content:center;z-index:999;padding:20px}
+#pbg.show{display:flex;animation:fi .3s}@keyframes fi{from{opacity:0}}
+#pop{max-width:440px;width:100%;text-align:center;padding:34px 26px;border-radius:28px;background:linear-gradient(160deg,#2b1f5c,#4a1a4f);border:1px solid var(--p);box-shadow:0 0 70px rgba(255,110,199,.5);animation:zoom .7s cubic-bezier(.3,1.5,.5,1) both}
+@keyframes zoom{from{transform:scale(.3) rotate(-8deg);opacity:0}}
+#pop .ic{width:60px;height:60px;color:var(--g);animation:bob 1.4s ease-in-out infinite}
+#pop h3{font-size:24px;margin:10px 0 6px}#pop p{color:var(--mu);margin-bottom:18px;white-space:pre-line}
+
+.toast{position:fixed;bottom:22px;left:50%;transform:translate(-50%,140px);background:var(--ok);color:#06241a;padding:11px 20px;border-radius:99px;font-weight:700;transition:transform .45s cubic-bezier(.3,1.5,.5,1);z-index:1000}
+.toast.show{transform:translate(-50%,0)}
+.spark{position:fixed;width:7px;height:7px;border-radius:50%;pointer-events:none;z-index:998;background:var(--g);animation:sp .8s ease-out forwards}
+@keyframes sp{to{transform:translate(var(--x),var(--y)) scale(0);opacity:0}}
+.quote{text-align:center;color:var(--mu);font-style:italic;margin:6px 0 16px;font-size:15px}
+footer{text-align:center;color:var(--mu);margin-top:30px;font-size:13px}
+.tools{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:12px}
+/* ===== Refined professional theme ===== */
+:root{--bg:#f6f3ee;--card:#fffdf9;--bd:#e4ddd0;--tx:#1f1c18;--mu:#716a5e;--p:#7a2e3b;--v:#1f3d3b;--c:#9b7b4b;--g:#8a6a31;--ok:#3f7d5c}
+body{background:var(--bg);color:var(--tx);font-size:15px;line-height:1.6}
+body::before,.orb,.spark,.toast-x{display:none!important}
+.wrap{max-width:1040px}
+.brand{padding:40px 0 14px;border-bottom:1px solid var(--bd);margin-bottom:6px}
+.brand h1{font-family:"Noto Serif Bengali",Georgia,serif;font-weight:700;font-size:clamp(30px,5vw,44px);background:none;color:var(--tx);-webkit-text-fill-color:var(--tx);animation:none;letter-spacing:.2px}
+.brand .tag{font-family:"Noto Serif Bengali",Georgia,serif;font-style:italic;color:var(--mu);font-size:15px}
+.quote{color:var(--mu)}
+.tools{margin-top:16px}
+#hl{background:#fbf6ea;border:1px solid #e6d5ad;border-left:4px solid var(--c);box-shadow:none;animation:none;color:var(--tx);border-radius:12px}
+#hl .ic{color:var(--g)!important}
+nav{gap:4px;border-bottom:1px solid var(--bd);padding-bottom:0;margin:18px 0 28px;flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start}
+.tab{background:none;border:none;border-bottom:2px solid transparent;border-radius:0;padding:10px 14px;color:var(--mu);white-space:nowrap;font-size:14.5px}
+.tab:hover{transform:none;border-color:var(--bd);color:var(--tx)}
+.tab.on{background:none;color:var(--p);border-bottom-color:var(--p);box-shadow:none}
+.tab .ic{color:inherit}
+.tab:hover .ic{transform:none}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;box-shadow:0 1px 2px rgba(31,28,24,.04);backdrop-filter:none;padding:24px;animation:none}
+.card:hover{transform:none;box-shadow:0 6px 18px rgba(31,28,24,.06);border-color:var(--bd)}
+.card h2{font-family:"Noto Serif Bengali",Georgia,serif;font-size:18px;font-weight:600;color:var(--tx)}
+.card h2 .ic{color:var(--c)}
+input,select,textarea{background:#fff;border:1px solid var(--bd);border-radius:10px;color:var(--tx);font-size:14.5px}
+input:focus,select:focus,textarea:focus{border-color:var(--v);box-shadow:0 0 0 3px rgba(31,61,59,.12)}
+option{background:#fff;color:var(--tx)}
+.btn{background:var(--v);border-radius:10px;font-weight:500;font-size:14.5px;padding:10px 16px;box-shadow:none;letter-spacing:.1px}
+.btn::before{display:none}
+.btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(31,61,59,.18)}
+.btn:active{transform:scale(.98)}
+.btn.ghost{background:transparent;color:var(--tx);border:1px solid var(--bd)}
+.btn.ghost:hover{background:#f1ece2;box-shadow:none}
+.btn.teal,.btn.red{background:var(--v)}
+.btn.red{background:var(--p)}
+.btn.ghost.red{background:transparent;color:var(--p);border-color:#e5cfd3}
+.btn.sm{padding:6px 11px;font-size:13px;border-radius:8px}
+.clock{background:none;-webkit-text-fill-color:var(--tx);color:var(--tx);font-family:"Noto Serif Bengali",Georgia,serif;font-weight:600;animation:none}
+.clock.run{animation:none}
+.ring{background:conic-gradient(var(--v) var(--deg,0deg),#ece6da 0);animation:none}
+.ring span{background:var(--card);animation:none}
+.laps li{background:#faf7f1;border:1px solid var(--bd);animation:none}
+table{font-size:14px}th{color:var(--mu);font-weight:500;font-size:13px;text-transform:none}
+th,td{border-bottom:1px solid var(--bd)}
+.bar{background:#ece6da;height:6px}
+.bar>div{background:var(--v)}
+.total{color:var(--tx);font-family:"Noto Serif Bengali",Georgia,serif;font-weight:700;font-size:28px;-webkit-text-fill-color:currentColor}
+.stat{border-bottom:1px solid var(--bd);color:var(--tx)}
+.chip{background:#faf7f1;border-color:var(--bd)}
+.subj h3{color:var(--v);font-family:"Noto Serif Bengali",Georgia,serif;font-size:15px;font-weight:600}
+.topic{background:#faf7f1;border:1px solid transparent;animation:none}
+.topic:hover{transform:none;background:#f3eee4;border-color:var(--bd)}
+.topic input{accent-color:var(--v)}
+.topic.done span{opacity:.5}
+.pbar,.pbar div{height:4px}.pbar{background:#ece6da}.pbar div{background:var(--v)}
+.q{background:#faf7f1;border:1px solid var(--bd);animation:none}
+.opt{background:#fff;border:1px solid var(--bd)}
+.opt:hover{transform:none;background:#f6f1e7}
+.opt.ok{background:#e6f1ea;border-color:var(--ok)}
+.opt.no{background:#f7e6e9;border-color:var(--p)}
+.score{color:var(--v);font-family:"Noto Serif Bengali",Georgia,serif;animation:none;font-size:26px;font-weight:700}
+.post{border-left:3px solid var(--c)}
+.post:hover{transform:none}
+.meta b{color:var(--v)}
+.post img{border-radius:10px}
+.post img:hover{transform:none}
+.react button{background:#fff;color:var(--tx);border:1px solid var(--bd)}
+.react button:hover{transform:none;background:#f6f1e7}
+.mi{background:#faf7f1;border:1px solid var(--bd);animation:none}
+.mi:hover{transform:none}
+.mi .d{color:var(--g);font-weight:500;font-size:13px}
+.drop{border:1px dashed #cfc6b5;background:#fdfbf7;color:var(--mu)}
+.drop:hover,.drop.over{border-color:var(--v);background:#f6f3ec;transform:none}
+.drop .ic{color:var(--v);animation:none}
+#gal{height:310px}
+.slide{border:1px solid var(--bd);box-shadow:0 8px 22px rgba(31,28,24,.14)}
+.slide.center{border:3px solid var(--card);box-shadow:0 14px 36px rgba(31,28,24,.22);animation:none}
+.car-cap b{color:var(--tx);font-family:"Noto Serif Bengali",Georgia,serif;font-weight:600;font-size:17px}
+.car-cap span{color:var(--mu)}
+.th{opacity:.55;border-color:transparent}
+.th.on{border-color:var(--c);opacity:1;transform:scale(1.1)}
+#lb{background:rgba(31,28,24,.88)}
+#lb img{border-radius:14px;box-shadow:0 20px 50px rgba(0,0,0,.35);animation:fi .4s}
+#pbg{background:rgba(31,28,24,.5);backdrop-filter:none}
+#pop{background:var(--card);border:1px solid var(--bd);box-shadow:0 20px 50px rgba(31,28,24,.25);border-radius:16px;animation:fi .35s}
+#pop .ic{color:var(--c);animation:none}
+#pop h3{font-family:"Noto Serif Bengali",Georgia,serif;color:var(--tx)}
+#pop p{color:var(--mu)}
+.toast{background:var(--v);color:#fff;border-radius:10px;font-weight:500}
+.empty{color:var(--mu)}
+footer{border-top:1px solid var(--bd);padding-top:18px;margin-top:40px;font-size:12.5px;color:var(--mu)}
+.tools .btn.ghost{font-size:13px}
+/* ===== Theme v3: ink & amber ===== */
+:root{--bg:#171b24;--card:#1f2430;--bd:#343b4d;--tx:#efe9dc;--mu:#9aa0b4;--p:#e0a94f;--v:#e0a94f;--c:#8fbfa8;--g:#e8c27a;--ok:#8fbfa8}
+body{background:radial-gradient(1200px 600px at 85% -10%,rgba(224,169,79,.10),transparent 60%),radial-gradient(900px 500px at -10% 110%,rgba(143,191,168,.09),transparent 60%),var(--bg);color:var(--tx)}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.06;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+.brand h1{color:var(--g);-webkit-text-fill-color:var(--g)}
+.brand{border-bottom-color:var(--bd)}
+nav{border-bottom-color:var(--bd)}
+.tab{color:var(--mu);border-bottom:2px solid transparent;transition:transform .35s cubic-bezier(.34,1.56,.64,1),color .3s,border-color .3s,background .3s}
+.tab:hover{transform:translateY(-3px);color:var(--tx);border-color:var(--bd)}
+.tab:active{transform:scale(.94);transition-duration:.08s}
+.tab.on{color:var(--p);border-bottom-color:var(--p)}
+.card{background:var(--card);border:1px solid var(--bd);box-shadow:0 12px 34px rgba(0,0,0,.28);border-radius:16px}
+.card:hover{transform:none;box-shadow:0 16px 40px rgba(0,0,0,.36)}
+.card h2 .ic{color:var(--p)}
+.car-cap b{color:var(--g)}
+input,select,textarea{background:#161a23;border:1px solid var(--bd);color:var(--tx)}
+input::placeholder,textarea::placeholder{color:#6f7689}
+input:focus,select:focus,textarea:focus{border-color:var(--p);box-shadow:0 0 0 3px rgba(224,169,79,.18)}
+option{background:#1f2430}
+.btn{background:var(--p);color:#1b1a16;font-weight:600;border-radius:12px;box-shadow:0 2px 0 rgba(0,0,0,.3),0 6px 16px rgba(0,0,0,.3);transition:transform .35s cubic-bezier(.34,1.56,.64,1),box-shadow .35s,background .3s}
+.btn:hover{transform:translateY(-4px);box-shadow:0 10px 24px rgba(224,169,79,.3),0 2px 0 rgba(0,0,0,.3)}
+.btn:active{transform:translateY(1px) scale(.96);box-shadow:0 1px 0 rgba(0,0,0,.3),0 2px 6px rgba(0,0,0,.3);transition-duration:.08s}
+.btn.ghost{background:transparent;color:var(--tx);border:1px solid var(--bd);box-shadow:none}
+.btn.ghost:hover{background:rgba(255,255,255,.05);border-color:var(--p);box-shadow:0 8px 20px rgba(0,0,0,.3)}
+.btn.teal{background:var(--c);color:#14231c}
+.btn.red{background:#c9605f;color:#fff}
+.btn.ghost.red{background:transparent;color:#e88a89;border-color:#5a3838}
+.btn.ghost.red:hover{background:rgba(201,96,95,.12)}
+.laps li{background:#262c3a;border:1px solid var(--bd)}
+.topic{background:#222838;border:1px solid transparent}
+.topic:hover{background:#2a3144;border-color:var(--bd)}
+.topic:active{transform:scale(.98)}
+.q{background:#222838;border:1px solid var(--bd)}
+.opt{background:#1b2029;border:1px solid var(--bd);color:var(--tx);transition:transform .3s cubic-bezier(.34,1.56,.64,1),background .25s}
+.opt:hover{background:#262d3c}
+.opt:active{transform:scale(.97)}
+.opt.ok{background:rgba(143,191,168,.18);border-color:var(--c)}
+.opt.no{background:rgba(201,96,95,.18);border-color:#c9605f}
+.mi{background:#222838;border:1px solid var(--bd)}
+.react button{background:#1b2029;color:var(--tx);border:1px solid var(--bd);transition:transform .3s cubic-bezier(.34,1.56,.64,1),background .25s}
+.react button:hover{transform:translateY(-3px);background:#262d3c}
+.react button:active{transform:scale(.92)}
+.drop{background:#1b2029;border:1px dashed #4a5268;color:var(--mu)}
+.drop:hover,.drop.over{background:#222838;border-color:var(--p);transform:none}
+.bar{background:#2a3144}.bar>div{background:var(--p)}
+.pbar{background:#2a3144}.pbar div{background:var(--c)}
+.ring{background:conic-gradient(var(--p) var(--deg,0deg),#2a3144 0)}
+.ring span{background:var(--card)}
+.slide{border:1px solid var(--bd);box-shadow:0 10px 26px rgba(0,0,0,.4)}
+.slide.center{border:3px solid var(--p);box-shadow:0 16px 40px rgba(0,0,0,.5)}
+.th{transition:transform .3s cubic-bezier(.34,1.56,.64,1),opacity .3s,border-color .3s}
+.th:active{transform:scale(.9)}
+.th.on{border-color:var(--p)}
+#lb{background:rgba(10,12,18,.9)}
+#hl{background:#262b3a;border:1px solid var(--p);border-left:4px solid var(--p);color:var(--tx)}
+#pbg{background:rgba(8,10,15,.6)}
+#pop{background:var(--card);border:1px solid var(--bd)}
+.toast{background:var(--c);color:#14231c}
+.post{border-left:3px solid var(--p)}
+.score,.total{color:var(--p)}
+.mi .d{color:var(--p)}
+.subj h3{color:var(--c)}
+footer{border-top:1px solid var(--bd);color:var(--mu)}
+</style>
+<style id="upgrade">
+#stars{position:fixed;inset:0;z-index:0;pointer-events:none}
+.hello{display:inline-flex;gap:10px;align-items:center;margin-top:10px;padding:6px 14px;border-radius:99px;background:var(--card);border:1px solid var(--bd);font-size:13.5px;color:var(--mu);animation:drop 1s .3s both}
+.hello b{color:var(--g)}.hello i{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 0 var(--ok);animation:ping 1.8s infinite}
+@keyframes ping{70%{box-shadow:0 0 0 9px transparent}}
+.card::after{content:"";position:absolute;inset:0;background:radial-gradient(280px circle at var(--mx,50%) var(--my,50%),rgba(255,110,199,.13),transparent 60%);opacity:0;transition:opacity .3s;pointer-events:none}
+.card:hover::after{opacity:1}
+.tilt{transform-style:preserve-3d;will-change:transform}
+/* composer */
+.cmp{display:flex;gap:12px;align-items:flex-start}
+.av{flex:none;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:18px;color:#fff;background:linear-gradient(135deg,hsl(var(--h,300) 80% 60%),hsl(calc(var(--h,300) + 50) 80% 45%));box-shadow:0 6px 18px hsl(var(--h,300) 80% 50% / .4)}
+.cmp .bd{flex:1;min-width:0}
+.cmp textarea{min-height:92px;margin-bottom:6px}
+.cnt{font-size:12px;color:var(--mu);text-align:right;transition:color .2s}.cnt.w{color:#ff8fa3}
+.moods{display:flex;gap:7px;flex-wrap:wrap;margin:4px 0 10px}
+.chip{border:1px solid var(--bd);background:var(--card);color:var(--tx);padding:5px 12px;border-radius:99px;cursor:pointer;font-size:13.5px;transition:transform .25s cubic-bezier(.3,1.7,.5,1),background .25s,border-color .25s}
+.chip:hover{transform:translateY(-3px) scale(1.06)}
+.chip.on{background:linear-gradient(120deg,var(--v),var(--p));border-color:transparent;box-shadow:0 6px 16px rgba(139,108,255,.4)}
+.pick{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border:1px dashed rgba(46,230,214,.5);border-radius:13px;color:var(--mu);cursor:pointer;font-size:14px;transition:.25s}
+.pick:hover{border-color:var(--p);color:var(--tx)}.pick input{display:none;margin:0}
+#pPrev{position:relative;display:none;margin:10px 0}#pPrev.show{display:block;animation:pop .5s both}
+#pPrev img{max-height:150px;border-radius:14px;border:1px solid var(--bd)}
+#pPrev button{position:absolute;top:6px;left:6px}
+.bar2{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+.bar2 input{flex:1;min-width:150px;margin:0}
+/* post */
+.post{border-left:0;padding:18px 20px;--h:300}
+.post::before{content:"";position:absolute;left:0;top:14px;bottom:14px;width:3px;border-radius:3px;background:linear-gradient(var(--p),var(--c))}
+.post.new{animation:newPost .8s cubic-bezier(.2,1.2,.3,1) both}
+@keyframes newPost{from{opacity:0;transform:translateY(-30px) scale(.94);filter:blur(6px)}}
+.ph{display:flex;gap:12px;align-items:center;margin-bottom:10px}
+.ph .nm{font-weight:700}.ph .sub{font-size:12.5px;color:var(--mu);display:flex;gap:8px;align-items:center}
+.ph .mo{margin-left:auto;font-size:12.5px;padding:3px 10px;border-radius:99px;background:rgba(255,255,255,.07)}
+.ph .del{opacity:0;transition:.25s}.post:hover .del{opacity:1}
+.pt{line-height:1.7;white-space:pre-wrap;word-break:break-word}
+.post .im{position:relative;margin-top:10px;border-radius:16px;overflow:hidden}.post .im img{display:block;width:100%;max-height:420px;object-fit:cover;margin:0;border-radius:0}
+.rxr{display:flex;gap:7px;flex-wrap:wrap;margin-top:14px;align-items:center}
+.rx{display:inline-flex;gap:5px;align-items:center;padding:4px 11px;border-radius:99px;border:1px solid var(--bd);background:var(--card);color:var(--tx);cursor:pointer;font-size:15px;transition:transform .25s cubic-bezier(.3,1.8,.5,1),background .25s}
+.rx small{font-size:12.5px;color:var(--mu);min-width:6px}.rx:hover{transform:translateY(-4px) scale(1.18)}
+.rx.mine{background:rgba(255,110,199,.2);border-color:var(--p)}.rx.mine small{color:var(--tx)}
+.rx.bump{animation:bump .45s}@keyframes bump{40%{transform:scale(1.5) rotate(-8deg)}}
+.cbtn{margin-left:auto;font-size:13.5px}
+.cms{margin-top:12px;padding-top:12px;border-top:1px solid var(--bd);display:none}.cms.open{display:block;animation:rise .4s both}
+.cm{display:flex;gap:9px;margin-bottom:9px;animation:rise .35s both}.cm .av{width:30px;height:30px;font-size:13px}
+.cm div.t{background:rgba(0,0,0,.25);padding:7px 12px;border-radius:4px 14px 14px 14px;font-size:14px}.cm b{color:var(--c);font-size:12.5px;display:block}
+.cms input{margin:4px 0 0}
+.fh{position:fixed;z-index:98;font-size:64px;pointer-events:none;filter:drop-shadow(0 8px 20px rgba(255,110,199,.7))}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+<style id="u3">
+body.light{--bg:#f4f0ff;--card:rgba(255,255,255,.72);--bd:rgba(90,70,160,.2);--tx:#241b45;--mu:#6b6190;--g:#c98a00;--c:#0a9c91}
+body.light::before{opacity:.35}body.light input,body.light select,body.light textarea{background:rgba(255,255,255,.8)}body.light .tab,body.light .btn.ghost{color:var(--tx)}
+.hg{display:block;width:190px;margin:4px auto;transform-origin:50% 50%;filter:drop-shadow(0 10px 26px rgba(139,108,255,.35))}
+.hg.run{filter:drop-shadow(0 10px 30px rgba(255,209,102,.5))}.hg.run #sm{animation:dsh .35s linear infinite}@keyframes dsh{to{stroke-dashoffset:-7}}
+.phase{text-align:center;color:var(--mu);font-size:14px;min-height:20px}.phase b{color:var(--g)}
+.nb{display:flex;gap:8px;flex-wrap:wrap}
+.tl{height:7px;border-radius:9px;background:rgba(255,255,255,.1);overflow:hidden;margin:6px 0 12px}.tl i{display:block;height:100%;background:linear-gradient(90deg,var(--c),var(--p));width:100%}
+.fc{min-height:150px;display:grid;place-items:center;text-align:center;font-size:20px;padding:22px;border-radius:20px;cursor:pointer;background:linear-gradient(135deg,rgba(139,108,255,.25),rgba(255,110,199,.2));border:1px solid var(--bd);transition:transform .5s;margin:10px 0}
+.fc.f{transform:rotateX(360deg)}
+.opt.gone{display:none}
+.pie{width:150px;height:150px;border-radius:50%;flex:none;box-shadow:0 0 30px rgba(139,108,255,.3)}
+.lg2{display:flex;flex-direction:column;gap:6px;font-size:14px}.lg2 i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:7px}
+.sett{padding:10px 14px;border-radius:14px;background:rgba(61,220,151,.12);border:1px solid rgba(61,220,151,.4);margin-bottom:8px;animation:rise .4s both}
+.sett b{color:var(--g)}
+.epw{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:10px;font-size:13.5px}.epw label{display:inline-flex;gap:5px;align-items:center;padding:4px 10px;border:1px solid var(--bd);border-radius:99px;cursor:pointer}.epw input{width:auto;margin:0}
+.bud{height:9px;border-radius:9px;background:rgba(255,255,255,.1);overflow:hidden;margin-top:8px}.bud i{display:block;height:100%;transition:width .8s,background .4s}
+.chk{display:flex;gap:10px;align-items:center;padding:7px 4px}.chk input{width:auto;margin:0}.chk.d span{text-decoration:line-through;opacity:.5}.chk .btn{margin-left:auto}
+.wb{display:flex;align-items:flex-end;gap:10px;height:110px;margin-top:10px}.wb div{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;font-size:11.5px;color:var(--mu)}
+.wb i{display:block;width:100%;border-radius:8px 8px 3px 3px;background:linear-gradient(var(--p),var(--v));min-height:3px;transition:height .8s}
+.big{font-size:34px;font-weight:800;color:var(--g)}
+.pl{margin:6px 0}.pl .o{position:relative;padding:9px 12px;border-radius:12px;border:1px solid var(--bd);margin-bottom:7px;cursor:pointer;overflow:hidden;display:flex;justify-content:space-between}
+.pl .o i{position:absolute;inset:0;width:0;background:rgba(139,108,255,.3);transition:width .7s;z-index:0}.pl .o span{position:relative;z-index:1}.pl .o.m{border-color:var(--c)}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+ <defs>
+  <symbol id="i-timer" viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9 2h6M12 2v3"/></symbol>
+  <symbol id="i-trip" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="3"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 12h18"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5a2 2 0 0 1 2-2h5v18H6a2 2 0 0 0-2 2zM20 5a2 2 0 0 0-2-2h-5v18h5a2 2 0 0 1 2 2z"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8zM19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8z"/></symbol>
+  <symbol id="i-pen" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16zM14 6l4 4"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="3"/><path d="M3 10h18M8 2v4M16 2v4"/><circle cx="12" cy="15" r="1.5"/></symbol>
+  <symbol id="i-img" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="M21 16l-5-5-9 10"/></symbol>
+  <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 16V4M7 9l5-5 5 5M4 20h16"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 21s-8-5.3-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.7-8 11-8 11z"/></symbol>
+  <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></symbol>
+  <symbol id="i-flag" viewBox="0 0 24 24"><path d="M5 22V3M5 4h11l-2 4 2 4H5"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z"/></symbol>
+  <symbol id="i-reset" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5"/></symbol>
+  <symbol id="i-flash" viewBox="0 0 24 24"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12l4 4 10-10"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+  <symbol id="i-wand" viewBox="0 0 24 24"><path d="M15 4l5 5L9 20H4v-5zM13 6l5 5"/></symbol>
+ </defs>
+</svg>
+
+<div class="orb o1"></div><div class="orb o2"></div>
+
+<div id="pbg"><div id="pop">
+  <svg class="ic"><use href="#i-spark"/></svg>
+  <h3 id="pTitle">আজকের স্মরণীয় দিন</h3>
+  <p id="pText"></p>
+  <button class="btn" onclick="closePop()"><svg class="ic"><use href="#i-check"/></svg>ঠিক আছে</button>
+</div></div>
+<div class="toast" id="toast"></div>
+
+<div class="wrap">
+  <header class="brand">
+    <h1>কিংকর্তব্যবিমূঢ়</h1>
+    <div class="tag"><span id="quote">সময় থামে না, আমরা থামি</span></div>
+    <div class="tools">
+      <button class="btn ghost sm" onclick="loadDemo()"><svg class="ic"><use href="#i-wand"/></svg>ডেমো ডেটা লোড (টেস্ট)</button>
+      <button class="btn ghost sm" onclick="exportData()"><svg class="ic"><use href="#i-up"/></svg>ব্যাকআপ</button>
+      <button class="btn ghost sm red" onclick="clearAll()"><svg class="ic"><use href="#i-x"/></svg>সব মুছুন</button>
+    </div>
+  </header>
+
+  <div id="hl"><svg class="ic lg" style="color:var(--g)"><use href="#i-spark"/></svg><div id="hlText"></div></div>
+
+  <nav>
+    <button class="tab on" data-p="timer"><svg class="ic"><use href="#i-timer"/></svg>টাইমার</button>
+    <button class="tab" data-p="tour"><svg class="ic"><use href="#i-trip"/></svg>ট্যুর হিসাব</button>
+    <button class="tab" data-p="study"><svg class="ic"><use href="#i-book"/></svg>সিলেবাস</button>
+    <button class="tab" data-p="quiz"><svg class="ic"><use href="#i-flash"/></svg>কুইজ</button>
+    <button class="tab" data-p="week"><svg class="ic"><use href="#i-pen"/></svg>এই সপ্তাহ</button>
+    <button class="tab" data-p="feed"><svg class="ic"><use href="#i-chat"/></svg>ফিড</button>
+    <button class="tab" data-p="dates"><svg class="ic"><use href="#i-cal"/></svg>স্মরণীয় দিন</button>
+    <button class="tab" data-p="gallery"><svg class="ic"><use href="#i-img"/></svg>গ্যালারি</button>
+  </nav>
+
+  <!-- TIMER -->
+  <section class="pg on" id="p-timer">
+    <div class="card">
+      <h2><svg class="ic"><use href="#i-timer"/></svg>স্টপ টাইমার</h2>
+      <div class="ring" id="ring"><span><div class="clock" id="clock" style="font-size:22px;margin:0">00:00.00</div></span></div>
+      <div class="row" style="justify-content:center">
+        <button class="btn teal" id="sBtn" onclick="tgl()"><svg class="ic"><use href="#i-play"/></svg>শুরু</button>
+        <button class="btn ghost" onclick="lap()"><svg class="ic"><use href="#i-flag"/></svg>ল্যাপ</button>
+        <button class="btn ghost" onclick="rst()"><svg class="ic"><use href="#i-reset"/></svg>রিসেট</button>
+      </div>
+      <ol class="laps" id="laps"></ol>
+    </div>
+  </section>
+
+  <!-- TOUR -->
+  <section class="pg" id="p-tour">
+    <div class="card">
+      <h2><svg class="ic"><use href="#i-trip"/></svg>ট্যুর তৈরি</h2>
+      <div class="row"><input id="tName" placeholder="ট্যুরের নাম, যেমন: সিলেট ২০২৬"><button class="btn nf" onclick="addTour()"><svg class="ic"><use href="#i-plus"/></svg>তৈরি</button></div>
+      <div class="row"><select id="tSel" onchange="rTour()"></select><button class="btn red sm nf" onclick="delTour()">ট্যুর মুছুন</button></div>
+    </div>
+    <div id="tArea"></div>
+  </section>
+
+  <!-- STUDY -->
+  <section class="pg" id="p-study">
+    <div class="card">
+      <h2><svg class="ic"><use href="#i-book"/></svg>সিলেবাস ভাগ</h2>
+      <div class="row"><input id="sName" placeholder="বিষয়, যেমন: পদার্থ"><input id="tpName" placeholder="টপিক"><button class="btn nf" onclick="addTopic()">যোগ</button></div>
+      <div id="syl"></div>
+    </div>
+  </section>
+
+  <!-- QUIZ -->
+  <section class="pg" id="p-quiz">
+    <div class="card">
+      <h2><svg class="ic"><use href="#i-flash"/></svg>কুইজ বানান</h2>
+      <input id="qT" placeholder="প্রশ্ন">
+      <div class="g2"><input id="qA" placeholder="অপশন ১"><input id="qB" placeholder="অপশন ২"><input id="qC" placeholder="অপশন ৩"><input id="qD" placeholder="অপশন ৪"></div>
+      <div class="row"><select id="qN"><option value="0">সঠিক: ১</option><option value="1">সঠিক: ২</option><option value="2">সঠিক: ৩</option><option value="3">সঠিক: ৪</option></select><button class="btn nf" onclick="addQ()">প্রশ্ন যোগ</button></div>
+    </div>
+    <div class="card"><h2><svg class="ic"><use href="#i-spark"/></svg>খেলুন</h2><div id="quiz"></div></div>
+  </section>
+
+  <!-- WEEK -->
+  <section class="pg" id="p-week">
+    <div class="card">
+      <h2><svg class="ic"><use href="#i-pen"/></svg>এই সপ্তাহে কী পড়লাম</h2>
+      <input id="wS" placeholder="বিষয়"><textarea id="wN" placeholder="কী কী পড়লাম..."></textarea>
+      <button class="btn" onclick="addWeek()"><svg class="ic"><use href="#i-check"/></svg>সেভ</button>
+    </div>
+    <div class="card"><div id="wList"></div></div>
+  </section>
+
+  <!-- FEED -->
+  <section class="pg" id="p-feed">
+    <div class="card">
+      <h2><svg class="ic"><use href="#i-chat"/></svg>নতুন পোস্ট</h2>
+      <input id="pN" placeholder="আপনার নাম"><textarea id="pT" placeholder="কী ভাবছেন?"></textarea>
+      <input type="file" id="pI" accept="image/*">
+      <button class="btn" onclick="addPost()"><svg class="ic"><use href="#i-up"/></svg>পোস্ট করুন</button>
+    </div>
+    <div id="feed"></div>
+  </section>
+
+  <!-- DATES -->
+  <section class="pg" id="p-dates">
+    <div class="card">
+      <h2><svg class="ic"><use href="#i-cal"/></svg>স্মরণীয় দিন যোগ</h2>
+      <input id="dT" placeholder="ঘটনার শিরোনাম"><input type="date" id="dD"><textarea id="dX" placeholder="বিবরণ (ঐচ্ছিক)"></textarea>
+      <button class="btn" onclick="addDate()"><svg class="ic"><use href="#i-check"/></svg>সংরক্ষণ</button>
+    </div>
+    <div class="card"><div id="dList"></div></div>
+  </section>
+
+  <!-- GALLERY -->
+  <section class="pg" id="p-gallery">
+    <div class="card">
+      <h2><svg class="ic"><use href="#i-img"/></svg>মেমোরি গ্যালারি</h2>
+      <label class="drop" id="drop">
+        <svg class="ic"><use href="#i-up"/></svg>
+        <div>এখানে একসাথে অনেক ছবি টেনে আনুন, অথবা ক্লিক করে বেছে নিন</div>
+        <input type="file" id="gF" accept="image/*" multiple hidden>
+      </label>
+      <input id="gC" placeholder="ক্যাপশন (ঐচ্ছিক, সব ছবিতে যাবে)">
+    </div>
+    <div class="card">
+      <div class="car-cap" id="gCap"></div>
+      <div id="gal"></div>
+      <div class="gl-row" id="gLike"></div>
+      <div class="thumbs" id="gThumb"></div>
+    </div>
+    <div id="lb" onclick="if(event.target.id==='lb')closeLb()">
+      <img id="lbImg" alt="">
+      <div class="car-cap" id="lbCap" style="margin:0"></div>
+      <div class="row" style="justify-content:center">
+        <button class="btn" id="lbLike" onclick="likeImg()"></button>
+        <button class="btn ghost" onclick="closeLb()">বন্ধ করুন</button>
+      </div>
+    </div>
+  </section>
+
+  <footer>কিংকর্তব্যবিমূঢ় · প্রিভিউ সংস্করণ · ডেটা এই ব্রাউজার সেশনে থাকবে</footer>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const D={tours:[],subs:[],qs:[],weeks:[],posts:[],dates:[],imgs:[]};
+let uid=1;const nid=()=>uid++;
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const ic=(n,c='')=>`<svg class="ic ${c}"><use href="#i-${n}"/></svg>`;
+const fd=d=>new Date(d).toLocaleDateString('bn-BD',{year:'numeric',month:'long',day:'numeric'});
+const ft=d=>new Date(d).toLocaleString('bn-BD',{dateStyle:'medium',timeStyle:'short'});
+
+function toast(m){const t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('show'),1600)}
+document.addEventListener('click',e=>{for(let i=0;i<10;i++){const s=document.createElement('div');s.className='spark';s.style.left=e.clientX+'px';s.style.top=e.clientY+'px';const a=Math.random()*6.28,d=30+Math.random()*50;s.style.setProperty('--x',Math.cos(a)*d+'px');s.style.setProperty('--y',Math.sin(a)*d+'px');document.body.appendChild(s);setTimeout(()=>s.remove(),800)}});
+
+/* tabs */
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));document.querySelectorAll('.pg').forEach(x=>x.classList.remove('on'));b.classList.add('on');$('p-'+b.dataset.p).classList.add('on')});
+
+/* quotes rotate */
+const Q=['সময় থামে না, আমরা থামি','এই মুহূর্তটাও একদিন স্মৃতি হবে','পড়ো, ঘোরো, লেখো, ভুলো না','প্রতিটি ট্যুর একটা গল্প'];
+let qi=0;setInterval(()=>{const s=$('quote').parentNode;s.style.opacity=0;setTimeout(()=>{$('quote').textContent=Q[++qi%Q.length];s.style.opacity=1},400)},5000);
+
+/* timer */
+let t0=0,el=0,rt=null,laps=[];
+const fmt=ms=>{const p=n=>String(n).padStart(2,'0');return `${p(Math.floor(ms/3600000))}:${p(Math.floor(ms/60000)%60)}:${p(Math.floor(ms/1000)%60)}.${p(Math.floor(ms/10)%100)}`};
+const now=()=>el+(rt?Date.now()-t0:0);
+function paint(){$('clock').textContent=fmt(now());$('ring').style.setProperty('--deg',((now()/60000)%1)*360+'deg')}
+function tgl(){if(rt){clearInterval(rt);rt=null;el+=Date.now()-t0;$('sBtn').innerHTML=ic('play')+'চালু';$('clock').classList.remove('run');$('ring').classList.remove('run')}else{t0=Date.now();rt=setInterval(paint,30);$('sBtn').innerHTML=ic('timer')+'থামুন';$('clock').classList.add('run');$('ring').classList.add('run')}}
+function lap(){if(!rt&&!el)return;const li=document.createElement('li');li.innerHTML=`<span>ল্যাপ ${laps.length+1}</span><b>${fmt(now())}</b>`;$('laps').prepend(li);laps.push(1)}
+function rst(){clearInterval(rt);rt=null;el=0;laps=[];$('laps').innerHTML='';$('sBtn').innerHTML=ic('play')+'শুরু';$('clock').classList.remove('run');$('ring').classList.remove('run');paint()}
+
+/* tour */
+function addTour(){const n=$('tName').value.trim();if(!n)return toast('নাম দিন');D.tours.push({id:nid(),name:n,mem:[],exp:[]});$('tName').value='';rSel();$('tSel').value=D.tours.at(-1).id;rTour();toast('ট্যুর তৈরি')}
+function rSel(){$('tSel').innerHTML=D.tours.map(t=>`<option value="${t.id}">${esc(t.name)}</option>`).join('')||'<option>কোনো ট্যুর নেই</option>'}
+const cur=()=>D.tours.find(t=>t.id==$('tSel').value);
+function delTour(){const t=cur();if(!t)return;D.tours=D.tours.filter(x=>x!==t);rSel();rTour()}
+function rTour(){
+  const t=cur(),a=$('tArea');
+  if(!t){a.innerHTML='<div class="card"><p class="empty">একটি ট্যুর তৈরি করুন</p></div>';return}
+  const tot=t.exp.reduce((s,e)=>s+e.amt,0),sh=t.mem.length?tot/t.mem.length:0,paid={};
+  t.mem.forEach(m=>paid[m]=0);t.exp.forEach(e=>paid[e.by]=(paid[e.by]||0)+e.amt);
+  const mRows=t.mem.map(m=>{const p=paid[m]||0,b=p-sh;return `<div class="stat"><span>${esc(m)}</span><span>দিয়েছেন ৳${p} · ${b>=0?'পাবেন':'দেবেন'} ৳${Math.abs(b).toFixed(0)}</span></div><div class="bar"><div data-w="${tot?Math.min(100,p/tot*100):0}"></div></div>`}).join('')||'<p class="empty">কোনো সদস্য নেই</p>';
+  const eRows=t.exp.map(e=>`<tr><td>${esc(e.title)}</td><td>${esc(e.by)}</td><td>৳${e.amt}</td><td><button class="btn ghost sm" onclick="delE(${e.id})">${ic('x')}</button></td></tr>`).join('')||'<tr><td colspan="4" class="empty">কোনো খরচ নেই</td></tr>';
+  a.innerHTML=`<div class="g2"><div class="card"><h2>${ic('trip')}সদস্য</h2><div class="row"><input id="mN" placeholder="নাম"><button class="btn nf sm" onclick="addM()">যোগ</button></div>${mRows}</div>
+  <div class="card"><h2>${ic('spark')}হিসাব</h2><div class="total">৳${tot}</div><p style="color:var(--mu);margin-top:6px">প্রতিজনের ভাগ ৳${sh.toFixed(0)}</p></div></div>
+  <div class="card"><h2>${ic('pen')}খরচ যোগ</h2><div class="row"><input id="eT" placeholder="খরচের নাম"><input id="eA" type="number" placeholder="টাকা"><select id="eB">${t.mem.map(m=>`<option>${esc(m)}</option>`).join('')||'<option>আগে সদস্য যোগ করুন</option>'}</select><button class="btn nf" onclick="addE()">যোগ</button></div>
+  <table><tr><th>খরচ</th><th>কে দিলেন</th><th>টাকা</th><th></th></tr>${eRows}</table></div>`;
+  requestAnimationFrame(()=>document.querySelectorAll('.bar>div').forEach(b=>b.style.width=b.dataset.w+'%'));
+}
+function addM(){const t=cur(),n=$('mN').value.trim();if(!t||!n)return toast('নাম দিন');t.mem.push(n);rTour()}
+function addE(){const t=cur(),title=$('eT').value.trim(),amt=+$('eA').value,by=$('eB').value;if(!t||!title||!amt||!t.mem.length)return toast('তথ্য দিন');t.exp.push({id:nid(),title,amt,by});rTour();toast('খরচ যোগ')}
+function delE(id){const t=cur();t.exp=t.exp.filter(e=>e.id!==id);rTour()}
+
+/* study */
+function addTopic(){const s=$('sName').value.trim(),t=$('tpName').value.trim();if(!s||!t)return toast('বিষয় ও টপিক দিন');let x=D.subs.find(q=>q.name===s);if(!x){x={id:nid(),name:s,tp:[]};D.subs.push(x)}x.tp.push({id:nid(),name:t,done:false});$('tpName').value='';rSyl();toast('যোগ হয়েছে')}
+function tog(id){D.subs.flatMap(s=>s.tp).find(t=>t.id===id).done^=true;rSyl()}
+function rSyl(){
+  const all=D.subs.flatMap(s=>s.tp),dn=all.filter(t=>t.done).length,p=all.length?Math.round(dn/all.length*100):0;
+  $('syl').innerHTML=`<p>সামগ্রিক অগ্রগতি ${p}%</p><div class="pbar"><div style="width:${p}%"></div></div>`+(D.subs.map(s=>{const d=s.tp.filter(t=>t.done).length,pp=s.tp.length?Math.round(d/s.tp.length*100):0;return `<div class="subj"><h3>${esc(s.name)} · ${pp}%</h3>`+s.tp.map(t=>`<label class="topic ${t.done?'done':''}"><input type="checkbox" ${t.done?'checked':''} onchange="tog(${t.id})"><span>${esc(t.name)}</span></label>`).join('')+'</div>'}).join('')||'<p class="empty">কোনো বিষয় নেই</p>');
+}
+
+/* quiz */
+let qi2=0,qs=0;
+function addQ(){const q=$('qT').value.trim(),o=['qA','qB','qC','qD'].map(i=>$(i).value.trim());if(!q||o.some(x=>!x))return toast('সব ঘর পূরণ করুন');D.qs.push({q,o,a:+$('qN').value});['qT','qA','qB','qC','qD'].forEach(i=>$(i).value='');rQuiz();toast('প্রশ্ন যোগ')}
+function rQuiz(){
+  const a=$('quiz');
+  if(!D.qs.length){a.innerHTML='<p class="empty">কোনো প্রশ্ন নেই</p>';return}
+  if(qi2>=D.qs.length){a.innerHTML=`<div class="score">স্কোর ${qs} / ${D.qs.length}</div><div style="text-align:center"><button class="btn" onclick="qi2=0;qs=0;rQuiz()">${ic('reset')}আবার</button></div>`;return}
+  const q=D.qs[qi2];
+  a.innerHTML=`<div class="q"><small style="color:var(--mu)">প্রশ্ন ${qi2+1}/${D.qs.length}</small><h3 style="margin:6px 0 8px">${esc(q.q)}</h3>${q.o.map((o,i)=>`<span class="opt" onclick="ans(${i},this)">${esc(o)}</span>`).join('')}</div>`;
+}
+function ans(i,el){const q=D.qs[qi2],box=el.parentNode;if(box.dataset.d)return;box.dataset.d=1;if(i===q.a){el.classList.add('ok');qs++}else{el.classList.add('no');box.children[q.a].classList.add('ok')}setTimeout(()=>{qi2++;rQuiz()},1000)}
+
+/* week */
+function addWeek(){const n=$('wN').value.trim();if(!n)return toast('কিছু লিখুন');D.weeks.unshift({s:$('wS').value.trim(),n,d:new Date().toISOString()});$('wS').value='';$('wN').value='';rWeek();toast('সেভ হয়েছে')}
+function rWeek(){$('wList').innerHTML=D.weeks.map(w=>`<div class="mi" style="flex-direction:column;align-items:flex-start"><div><span class="d">${fd(w.d)}</span> ${w.s?'· '+esc(w.s):''}</div><div>${esc(w.n)}</div></div>`).join('')||'<p class="empty">এখনো কিছু লেখা হয়নি</p>'}
+
+/* feed */
+function readF(f){return new Promise(r=>{if(!f)return r(null);const q=new FileReader();q.onload=e=>r(e.target.result);q.readAsDataURL(f)})}
+async function addPost(){const n=$('pN').value.trim()||'অজানা',t=$('pT').value.trim(),img=await readF($('pI').files[0]);if(!t&&!img)return toast('লেখা বা ছবি দিন');D.posts.unshift({id:nid(),n,t,img,d:new Date().toISOString(),l:0});$('pT').value='';$('pI').value='';rFeed();toast('পোস্ট হয়েছে')}
+function like(id){const p=D.posts.find(x=>x.id===id);p.l++;rFeed()}
+function rFeed(){$('feed').innerHTML=D.posts.map(p=>`<div class="card post"><div class="meta"><b>${esc(p.n)}</b><span>${ft(p.d)}</span></div><div>${esc(p.t)}</div>${p.img?`<img src="${p.img}" alt="">`:''}<div class="react"><button onclick="like(${p.id})">${ic('heart')}${p.l}</button><button onclick="toast('মন্তব্য শীঘ্রই')">${ic('chat')}মন্তব্য</button></div></div>`).join('')||'<p class="empty">এখনো কোনো পোস্ট নেই</p>'}
+
+/* dates */
+function addDate(){const t=$('dT').value.trim(),d=$('dD').value;if(!t||!d)return toast('শিরোনাম ও তারিখ দিন');D.dates.push({id:nid(),t,d,x:$('dX').value.trim()});$('dT').value='';$('dD').value='';$('dX').value='';rDates();chkToday();toast('সংরক্ষিত')}
+function rDates(){$('dList').innerHTML=[...D.dates].sort((a,b)=>a.d.slice(5).localeCompare(b.d.slice(5))).map(d=>`<div class="mi"><div><div class="d">${fd(d.d+'T00:00')} · প্রতি বছর</div><div>${esc(d.t)}</div>${d.x?`<small style="color:var(--mu)">${esc(d.x)}</small>`:''}</div><button class="btn red sm" onclick="delD(${d.id})">মুছুন</button></div>`).join('')||'<p class="empty">কোনো স্মরণীয় দিন নেই</p>'}
+function delD(id){D.dates=D.dates.filter(d=>d.id!==id);rDates();chkToday()}
+function chkToday(){
+  const n=new Date(),md=String(n.getMonth()+1).padStart(2,'0')+'-'+String(n.getDate()).padStart(2,'0');
+  const h=D.dates.filter(d=>d.d.slice(5)===md),hl=$('hl');
+  if(h.length){$('hlText').innerHTML=`<b>আজকের স্মরণীয় দিন:</b> ${h.map(x=>esc(x.t)).join(', ')}`;hl.classList.add('show');$('pText').textContent=h.map(x=>x.t+(x.x?' — '+x.x:'')).join('\n');setTimeout(()=>$('pbg').classList.add('show'),500)}
+  else hl.classList.remove('show');
+}
+function closePop(){$('pbg').classList.remove('show')}
+$('pbg').onclick=e=>{if(e.target.id==='pbg')closePop()};
+
+/* gallery: multi upload with stagger + sway */
+const drop=$('drop');
+['dragenter','dragover'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.add('over')}));
+['dragleave','drop'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove('over')}));
+drop.addEventListener('drop',e=>addImgs(e.dataTransfer.files));
+$('gF').onchange=e=>addImgs(e.target.files);
+async function addImgs(list){
+  const files=[...list].filter(f=>f.type.startsWith('image/'));if(!files.length)return toast('ছবি বেছে নিন');
+  const cap=$('gC').value.trim();
+  for(const f of files){D.imgs.push({id:nid(),src:await readF(f),cap:cap||f.name.replace(/\.[^.]+$/,'')})}
+  $('gC').value='';$('gF').value='';rGal();toast(files.length+'টি ছবি যোগ হয়েছে');
+}
+function delI(id){D.imgs=D.imgs.filter(i=>i.id!==id);rGal()}
+let gi=0;
+const st=$('gal');
+function rGal(){
+  const n=D.imgs.length;
+  if(!n){st.innerHTML='<p class="empty">কোনো ছবি নেই</p>';$('gCap').innerHTML='';$('gLike').innerHTML='';$('gThumb').innerHTML='';return}
+  st.innerHTML=D.imgs.map((im,k)=>`<div class="slide" data-k="${k}"><img src="${im.src}" alt="" draggable="false"></div>`).join('');
+  updateView();
+}
+function goI(k){const n=D.imgs.length;if(!n)return;gi=((k%n)+n)%n;updateView()}
+function updateView(){
+  const n=D.imgs.length;if(!n)return;
+  gi=((gi%n)+n)%n;
+  st.querySelectorAll('.slide').forEach(el=>{
+    const k=+el.dataset.k;let off=k-gi;
+    if(n>2){if(off>n/2)off-=n;if(off<-n/2)off+=n}
+    const a=Math.abs(off);
+    el.style.transform=`translate(-50%,-50%) translateX(${off*62}%) scale(${a===0?1.3:Math.max(.45,1-a*.22)}) rotateY(${-off*12}deg)`;
+    el.style.opacity=a>2?0:(a===0?1:.45-(a-1)*.2);
+    el.style.zIndex=20-a;
+    el.style.pointerEvents=a>2?'none':'auto';
+    el.classList.toggle('center',a===0);
+  });
+  const cur=D.imgs[gi],lk=cur.likes||0;
+  $('gCap').innerHTML=`<b>${esc(cur.cap)}</b><span>${gi+1} / ${n}</span>`;
+  $('gLike').innerHTML=`<button class="btn ${cur.liked?'teal':'ghost'}" onclick="likeImg()">${ic('heart')}${cur.liked?'পছন্দ হয়েছে':'লাইক'} · ${lk}</button><button class="btn ghost sm red" onclick="delI(${cur.id})">${ic('x')}মুছুন</button>`;
+  $('gThumb').innerHTML=D.imgs.map((im,k)=>`<img class="th ${k===gi?'on':''}" src="${im.src}" onclick="goI(${k})" alt="">`).join('');
+  if($('lb').classList.contains('show'))fillLb();
+}
+function likeImg(){const im=D.imgs[gi];if(!im)return;im.liked=!im.liked;im.likes=(im.likes||0)+(im.liked?1:-1);updateView()}
+function fillLb(){const im=D.imgs[gi];$('lbImg').src=im.src;$('lbCap').innerHTML=`<b>${esc(im.cap)}</b>`;$('lbLike').className='btn '+(im.liked?'teal':'');$('lbLike').innerHTML=ic('heart')+(im.liked?'পছন্দ হয়েছে':'লাইক')+' · '+(im.likes||0)}
+function openLb(){if(!D.imgs.length)return;fillLb();$('lb').classList.add('show')}
+function closeLb(){$('lb').classList.remove('show')}
+let dx0=null,moved=false;
+st.addEventListener('pointerdown',e=>{dx0=e.clientX;moved=false});
+st.addEventListener('pointermove',e=>{if(dx0!==null&&Math.abs(e.clientX-dx0)>8)moved=true});
+st.addEventListener('pointerup',e=>{
+  if(dx0===null)return;const d=e.clientX-dx0;dx0=null;
+  if(Math.abs(d)>50){goI(gi+(d<0?1:-1));return}
+  if(moved)return;
+  const el=e.target.closest('.slide');if(!el)return;
+  if(+el.dataset.k===gi)openLb();else goI(+el.dataset.k);
+});
+st.addEventListener('pointerleave',()=>{dx0=null});
+
+/* demo / test data with generated images */
+function genImg(hue,label){const c=document.createElement('canvas');c.width=400;c.height=400;const x=c.getContext('2d');const g=x.createLinearGradient(0,0,400,400);g.addColorStop(0,`hsl(${hue},80%,60%)`);g.addColorStop(1,`hsl(${hue+60},75%,35%)`);x.fillStyle=g;x.fillRect(0,0,400,400);for(let i=0;i<14;i++){x.beginPath();x.arc(Math.random()*400,Math.random()*400,20+Math.random()*90,0,6.3);x.fillStyle=`rgba(255,255,255,${Math.random()*.15})`;x.fill()}x.fillStyle='rgba(0,0,0,.35)';x.font='bold 40px sans-serif';x.fillText(label,24,370);return c.toDataURL('image/jpeg',.85)}
+function loadDemo(){
+  if(D.tours.length)return toast('ডেমো ডেটা আগেই আছে');
+  const t={id:nid(),name:'কক্সবাজার ট্রিপ',mem:['রাফি','নাবিলা','সাকিব'],exp:[{id:nid(),title:'হোটেল',amt:4500,by:'রাফি'},{id:nid(),title:'গাড়ি',amt:3000,by:'নাবিলা'},{id:nid(),title:'খাবার',amt:1800,by:'সাকিব'}]};
+  D.tours.push(t);
+  D.subs.push({id:nid(),name:'পদার্থবিজ্ঞান',tp:[{id:nid(),name:'গতি',done:true},{id:nid(),name:'বল',done:false},{id:nid(),name:'তাপ',done:false}]});
+  D.qs.push({q:'বাংলাদেশের জাতীয় ফুল কোনটি?',o:['শাপলা','গোলাপ','রজনীগন্ধা','জবা'],a:0},{q:'পানির রাসায়নিক সংকেত কী?',o:['CO2','H2O','O2','NaCl'],a:1});
+  D.weeks.push({s:'ইতিহাস',n:'মুক্তিযুদ্ধের অধ্যায় দুইটি পড়লাম',d:new Date().toISOString()});
+  D.posts.push({id:nid(),n:'নাবিলা',t:'কক্সবাজারের সমুদ্র সত্যিই মুগ্ধ করেছে!',img:genImg(190,'Sea'),d:new Date().toISOString(),l:3});
+  const n=new Date(),md=String(n.getMonth()+1).padStart(2,'0')+'-'+String(n.getDate()).padStart(2,'0');
+  D.dates.push({id:nid(),t:'প্রথম ট্যুর',d:'2024-'+md,x:'সবাই মিলে প্রথম ভ্রমণ'});
+  const hues=[330,20,45,120,160,200,260,300,10,140,220,280,350,60,90,240,310,25,175,255];
+  for(let i=0;i<20;i++)D.imgs.push({id:nid(),src:genImg(hues[i],'#'+(i+1)),cap:'স্মৃতি '+(i+1)});
+  rSel();$('tSel').value=t.id;rTour();rSyl();rQuiz();rWeek();rFeed();rDates();rGal();chkToday();toast('ডেমো ডেটা লোড হয়েছে');
+}
+function exportData(){const b=new Blob([JSON.stringify(D)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='kinkortobyobimur-backup.json';a.click()}
+function clearAll(){for(const k in D)D[k]=[];rSel();rTour();rSyl();qi2=0;qs=0;rQuiz();rWeek();rFeed();rDates();rGal();chkToday();toast('সব মুছে গেছে')}
+
+paint();rSel();rTour();rSyl();rQuiz();rWeek();rFeed();rDates();rGal();chkToday();
+</script>
+<script>
+/* ===== UPGRADE LAYER ===== */
+const bn=n=>String(n).replace(/\d/g,d=>'০১২৩৪৫৬৭৮৯'[d]);
+const hue=s=>[...s].reduce((a,c)=>a*31+c.charCodeAt(0),7)%360;
+const av=n=>`<div class="av" style="--h:${hue(n)}">${esc([...n][0]||'?')}</div>`;
+/* starfield */
+(function(){const c=document.createElement('canvas');c.id='stars';document.body.prepend(c);const x=c.getContext('2d');let W,H,P=[],m={x:-999,y:-999};
+const rs=()=>{W=c.width=innerWidth;H=c.height=innerHeight;P=Array.from({length:Math.min(70,W/18|0)},()=>({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3}))};rs();addEventListener('resize',rs);
+addEventListener('pointermove',e=>{m.x=e.clientX;m.y=e.clientY});
+(function f(){x.clearRect(0,0,W,H);for(const p of P){p.x=(p.x+p.vx+W)%W;p.y=(p.y+p.vy+H)%H;x.fillStyle='rgba(255,255,255,.55)';x.fillRect(p.x,p.y,1.6,1.6);
+for(const q of P){const d=Math.hypot(p.x-q.x,p.y-q.y);if(d<110){x.strokeStyle=`rgba(139,108,255,${.18*(1-d/110)})`;x.beginPath();x.moveTo(p.x,p.y);x.lineTo(q.x,q.y);x.stroke()}}
+const dm=Math.hypot(p.x-m.x,p.y-m.y);if(dm<150){x.strokeStyle=`rgba(46,230,214,${.5*(1-dm/150)})`;x.beginPath();x.moveTo(p.x,p.y);x.lineTo(m.x,m.y);x.stroke()}}requestAnimationFrame(f)})()})();
+/* greeting */
+(function(){const h=document.createElement('div');h.className='hello';document.querySelector('.brand .tag').after(h);
+const u=()=>{const n=new Date(),H=n.getHours(),g=H<5?'শুভ রাত্রি':H<12?'শুভ সকাল':H<16?'শুভ দুপুর':H<18?'শুভ বিকেল':H<20?'শুভ সন্ধ্যা':'শুভ রাত্রি';h.innerHTML=`<i></i><b>${g}</b><span>${n.toLocaleTimeString('bn-BD',{hour:'2-digit',minute:'2-digit'})}</span>`};u();setInterval(u,20000)})();
+/* spotlight + tilt */
+document.addEventListener('pointermove',e=>{const c=e.target.closest&&e.target.closest('.card');if(!c)return;const r=c.getBoundingClientRect();c.style.setProperty('--mx',e.clientX-r.left+'px');c.style.setProperty('--my',e.clientY-r.top+'px');
+if(c.classList.contains('post')){const px=(e.clientX-r.left)/r.width-.5,py=(e.clientY-r.top)/r.height-.5;c.style.transform=`perspective(900px) rotateY(${px*5}deg) rotateX(${-py*4}deg) translateY(-3px)`}});
+document.addEventListener('pointerout',e=>{const c=e.target.closest&&e.target.closest('.post');if(c)c.style.transform=''});
+/* confetti */
+function confetti(x,y,n=40){const cs=['#ff6ec7','#8b6cff','#2ee6d6','#ffd166','#3ddc97'];for(let i=0;i<n;i++){const e=document.createElement('i');e.style.cssText=`position:fixed;left:${x}px;top:${y}px;width:8px;height:12px;background:${cs[i%5]};z-index:99;pointer-events:none;border-radius:2px`;document.body.appendChild(e);const a=Math.random()*6.28,v=120+Math.random()*220;e.animate([{transform:'translate(0,0) rotate(0)',opacity:1},{transform:`translate(${Math.cos(a)*v}px,${Math.sin(a)*v+260}px) rotate(${Math.random()*720}deg)`,opacity:0}],{duration:1200+Math.random()*600,easing:'cubic-bezier(.2,.7,.4,1)'}).onfinish=()=>e.remove()}}
+const _ans=ans;ans=function(i,el){const r=el.getBoundingClientRect();_ans(i,el);if(el.classList.contains('ok')&&i===D.qs[qi2].a)confetti(r.left+r.width/2,r.top,26)};
+const _rq=rQuiz;rQuiz=function(){_rq();if(D.qs.length&&qi2>=D.qs.length&&qs===D.qs.length)setTimeout(()=>confetti(innerWidth/2,innerHeight/3,90),200)};
+/* count-up totals */
+const _rt=rTour;rTour=function(){_rt();document.querySelectorAll('.total').forEach(el=>{const v=+el.textContent.replace(/[^\d]/g,'')||0,t0=performance.now();(function s(t){const k=Math.min(1,(t-t0)/900),e=1-Math.pow(1-k,3);el.textContent='৳'+bn(Math.round(v*e));if(k<1)requestAnimationFrame(s)})(t0)})};
+
+/* ===== FEED 2.0 ===== */
+const RX=['❤️','😂','😮','🔥','👏'],MO=[['😊','খুশি'],['🔥','উত্তেজিত'],['📚','পড়াশোনা'],['🌴','ট্যুর'],['💭','ভাবনা']];
+let fMood=0,fFilter='all',fQ='',newId=null,myName='';
+const ago=d=>{const s=(Date.now()-new Date(d))/1000;return s<45?'এইমাত্র':s<3600?bn(Math.floor(s/60)||1)+' মিনিট আগে':s<86400?bn(Math.floor(s/3600))+' ঘণ্টা আগে':s<604800?bn(Math.floor(s/86400))+' দিন আগে':ft(d)};
+const tot=p=>Object.values(p.r).reduce((a,b)=>a+b,0);
+function norm(p){if(!p.r)p.r={'❤️':p.l||0};p.c=p.c||[];return p}
+(function build(){
+ const cd=document.querySelector('#p-feed .card');
+ cd.innerHTML=`<h2>${ic('chat')}নতুন পোস্ট</h2><div class="cmp"><div id="pAv"></div><div class="bd">
+ <input id="pN" placeholder="আপনার নাম" oninput="myName=this.value.trim();$('pAv').innerHTML=av(myName||'?')">
+ <textarea id="pT" maxlength="280" placeholder="কী ভাবছেন?" oninput="cnt()"></textarea><div class="cnt" id="pCnt">০ / ২৮০</div>
+ <div class="moods" id="moods">${MO.map((m,i)=>`<button type="button" class="chip ${i?'':'on'}" onclick="setMood(${i})">${m[0]} ${m[1]}</button>`).join('')}</div>
+ <div id="pPrev"></div>
+ <div class="row"><label class="pick">${ic('img')}ছবি যোগ করুন<input type="file" id="pI" accept="image/*" onchange="prev(this)"></label><button class="btn nf" onclick="addPost()">${ic('up')}পোস্ট করুন</button></div></div></div>`;
+ $('pAv').innerHTML=av('?');
+ const b=document.createElement('div');b.className='bar2';
+ b.innerHTML=`<input id="fS" placeholder="🔍 ফিডে খুঁজুন..." oninput="fQ=this.value.trim().toLowerCase();rFeed()">`+[['all','সব'],['img','ছবি সহ'],['hot','জনপ্রিয়']].map(f=>`<button class="chip ${f[0]==='all'?'on':''}" data-f="${f[0]}" onclick="setF(this)">${f[1]}</button>`).join('');
+ $('feed').before(b)})();
+function cnt(){const n=$('pT').value.length,e=$('pCnt');e.textContent=bn(n)+' / ২৮০';e.classList.toggle('w',n>250)}
+function setMood(i){fMood=i;[...$('moods').children].forEach((c,k)=>c.classList.toggle('on',k===i))}
+function setF(b){fFilter=b.dataset.f;document.querySelectorAll('.bar2 .chip').forEach(c=>c.classList.toggle('on',c===b));rFeed()}
+function prev(inp){const f=inp.files[0],p=$('pPrev');if(!f){p.classList.remove('show');return}const u=URL.createObjectURL(f);p.innerHTML=`<img src="${u}" alt=""><button type="button" class="btn red sm" onclick="$('pI').value='';$('pPrev').classList.remove('show')">${ic('x')}</button>`;p.classList.add('show')}
+async function addPost(){const n=$('pN').value.trim()||'অজানা',t=$('pT').value.trim(),img=await readF($('pI').files[0]);if(!t&&!img)return toast('লেখা বা ছবি দিন');
+ const p={id:nid(),n,t,img,d:new Date().toISOString(),r:{},c:[],mood:fMood};D.posts.unshift(p);newId=p.id;$('pT').value='';$('pI').value='';$('pPrev').classList.remove('show');cnt();rFeed();toast('পোস্ট হয়েছে ✨');const r=$('p-feed').querySelector('.btn').getBoundingClientRect();confetti(r.left+r.width/2,r.top,30)}
+const P=id=>D.posts.find(x=>x.id===id);
+function react(id,em,ev){const p=norm(P(id));if(p.mine===em){p.r[em]--;p.mine=null}else{if(p.mine)p.r[p.mine]--;p.r[em]=(p.r[em]||0)+1;p.mine=em}rFeed();const b=document.querySelector(`[data-rx="${id}${em}"]`);if(b){b.classList.add('bump')}}
+function like(id){react(id,'❤️')}
+function dbl(id,e){if(e.target.closest('button,input'))return;const p=norm(P(id));if(p.mine!=='❤️')react(id,'❤️');const h=document.createElement('div');h.className='fh';h.textContent='❤️';h.style.left=e.clientX-32+'px';h.style.top=e.clientY-32+'px';document.body.appendChild(h);h.animate([{transform:'scale(.2)',opacity:0},{transform:'scale(1.25)',opacity:1,offset:.3},{transform:'translateY(-90px) scale(1)',opacity:0}],{duration:900,easing:'ease-out'}).onfinish=()=>h.remove()}
+function togC(id){const p=norm(P(id));p.open=!p.open;rFeed();if(p.open)setTimeout(()=>{const i=document.getElementById('ci'+id);i&&i.focus()},30)}
+function addC(id,e){if(e.key!=='Enter')return;const v=e.target.value.trim();if(!v)return;const p=norm(P(id));p.c.push({n:myName||'আমি',t:v});rFeed();setTimeout(()=>{const i=document.getElementById('ci'+id);i&&i.focus()},30)}
+function delP(id){D.posts=D.posts.filter(p=>p.id!==id);rFeed();toast('পোস্ট মুছে গেছে')}
+function card(p){norm(p);const m=MO[p.mood??0],isNew=p.id===newId;
+ return `<div class="card post tilt ${isNew?'new':''}" style="--h:${hue(p.n)}" ondblclick="dbl(${p.id},event)">
+ <div class="ph">${av(p.n)}<div><div class="nm">${esc(p.n)}</div><div class="sub"><span class="ago" data-d="${p.d}">${ago(p.d)}</span></div></div><span class="mo">${m[0]} ${m[1]}</span><button class="btn red sm del" onclick="delP(${p.id})">${ic('x')}</button></div>
+ ${p.t?`<div class="pt">${esc(p.t)}</div>`:''}${p.img?`<div class="im"><img src="${p.img}" alt=""></div>`:''}
+ <div class="rxr">${RX.map(e=>`<button class="rx ${p.mine===e?'mine':''}" data-rx="${p.id}${e}" onclick="react(${p.id},'${e}')">${e}<small>${p.r[e]?bn(p.r[e]):''}</small></button>`).join('')}<button class="btn ghost sm cbtn" onclick="togC(${p.id})">${ic('chat')}মন্তব্য ${bn(p.c.length)}</button></div>
+ <div class="cms ${p.open?'open':''}">${p.c.map(c=>`<div class="cm">${av(c.n)}<div class="t"><b>${esc(c.n)}</b>${esc(c.t)}</div></div>`).join('')}<input id="ci${p.id}" placeholder="মন্তব্য লিখে Enter চাপুন..." onkeydown="addC(${p.id},event)"></div></div>`}
+function rFeed(){
+ const L=D.posts.map(norm).filter(p=>(fFilter==='all'||(fFilter==='img'&&p.img)||(fFilter==='hot'&&tot(p)>=3))&&(!fQ||(p.t+p.n).toLowerCase().includes(fQ)));
+ $('feed').innerHTML=L.map(card).join('')||`<div class="card"><p class="empty">${D.posts.length?'কিছু পাওয়া যায়নি':'প্রথম পোস্টটা আপনার হোক ✨'}</p></div>`;newId=null}
+setInterval(()=>document.querySelectorAll('.ago').forEach(e=>e.textContent=ago(e.dataset.d)),30000);
+const _ld=loadDemo;loadDemo=function(){const had=D.tours.length;_ld();if(had)return;
+ const ps=D.posts;ps.forEach(p=>{p.r={'❤️':p.l||0};p.mood=3;p.c=[{n:'রাফি',t:'আমিও ছিলাম ওখানে, অসাধারণ!'}]});
+ ps.push({id:nid(),n:'সাকিব',t:'আজ পদার্থবিজ্ঞানের গতি অধ্যায় শেষ। পরীক্ষার আগে আরও দুইটা বাকি 📚',d:new Date(Date.now()-3600e3*3).toISOString(),r:{'🔥':4,'👏':2},c:[],mood:2});
+ ps.push({id:nid(),n:'রাফি',t:'ট্যুরের হিসাব মিলে গেল, কেউ কারো কাছে ঋণী নয় 😄\nপরের ট্যুর কোথায়?',d:new Date(Date.now()-86400e3*2).toISOString(),r:{'😂':5,'❤️':1},c:[],mood:0});
+ rFeed()};
+rFeed();
+</script>
+<script>
+/* ===== v3: persistence, hourglass, tour+, study+, quiz+, polls, dates+, albums ===== */
+const X={log:{},act:{},exam:null,polls:[],lb:[],pomoN:0,nt:{}};let ALL=null,TH='dark',FZ=1,saveWarn=0;
+const dk=d=>{d=d||new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+const KEY='kkbm_v3';
+/* ---- সার্ভারে সেভ (login করা ইউজারের নিজের ডেটা) ---- */
+let READY=false,lastSent='',ME='';
+function payload(){return {D:{...D,imgs:ALL||D.imgs},X,uid,TH,FZ}}
+function save(beacon){
+  if(!READY)return;
+  let s;try{s=JSON.stringify(payload())}catch(e){return}
+  if(s===lastSent)return;
+  if(beacon===true){
+    if(navigator.sendBeacon&&s.length<60000000)navigator.sendBeacon('/api/data',new Blob(['{"data":'+s+'}'],{type:'application/json'}));
+    return;
+  }
+  fetch('/api/data',{method:'PUT',headers:{'Content-Type':'application/json'},body:'{"data":'+s+'}'})
+    .then(r=>{if(r.status===401){location.href='/login.html';return}if(!r.ok)throw 0;lastSent=s})
+    .catch(()=>{if(!saveWarn++)toast('সেভ হয়নি: ইন্টারনেট/সার্ভার দেখুন')})
+}
+async function logout(){READY&&await save();try{await fetch('/api/logout',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'})}catch(e){}location.href='/login.html'}
+function applyTheme(){document.body.classList.toggle('light',TH==='light');document.body.style.zoom=FZ}
+function renderAll(){rSel();rTour();rSyl();rQuiz();rWeek();rFeed();rDates();rGal();chkToday();rStx();rPolls();rOtd();paint()}
+(function(){const t=document.querySelector('.tools');t.insertAdjacentHTML('beforeend',`<button class="btn ghost sm" onclick="TH=TH==='dark'?'light':'dark';applyTheme()">${ic('sun')}থিম</button><button class="btn ghost sm" onclick="FZ=Math.max(.8,FZ-.1);applyTheme()">A−</button><button class="btn ghost sm" onclick="FZ=Math.min(1.4,FZ+.1);applyTheme()">A+</button><label class="btn ghost sm">${ic('up')}ইমপোর্ট<input type="file" accept=".json" hidden onchange="importData(this)"></label>`)})();
+function importData(i){const f=i.files[0];if(!f)return;const r=new FileReader();r.onload=e=>{try{const s=JSON.parse(e.target.result);Object.assign(D,s.D||s);if(s.X)Object.assign(X,s.X);ALL=null;uid=Math.max(uid,s.uid||0,...Object.values(D).flat().map(x=>x&&x.id||0))+1;renderAll();toast('ব্যাকআপ ফিরে এসেছে')}catch(x){toast('ফাইলটি ঠিক নয়')}};r.readAsText(f)}
+function exportData(){const b=new Blob([JSON.stringify({D:{...D,imgs:ALL||D.imgs},X,uid})],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='kinkortobyobimur-backup.json';a.click()}
+const _ca=clearAll;clearAll=function(){ALL=null;_ca();Object.assign(X,{log:{},act:{},exam:null,polls:[],lb:[],pomoN:0});renderAll();try{localStorage.removeItem(KEY)}catch(e){}};
+const _ld3=loadDemo;loadDemo=function(){const h=D.tours.length;_ld3();if(h)return;const t=D.tours[0];t.exp.forEach((e,i)=>e.cat=['থাকা','যাতায়াত','খাবার'][i]);t.budget=12000;t.chk=[{id:nid(),n:'পাওয়ার ব্যাংক',d:true},{id:nid(),n:'সানস্ক্রিন',d:false}];X.polls.push({id:nid(),q:'পরের ট্যুর কোথায়?',o:[{t:'সিলেট',v:3},{t:'বান্দরবান',v:5},{t:'সুন্দরবন',v:2}]});D.imgs.forEach((im,i)=>im.al=i<10?'কক্সবাজার':'ক্যাম্পাস');X.exam={n:'মিডটার্ম',d:dk(new Date(Date.now()+864e5*12))};X.log[dk()]=40;X.act[dk()]=1;for(let i=1;i<=4;i++){const k=dk(new Date(Date.now()-864e5*i));X.act[k]=1;X.log[k]=15+i*12}renderAll()};
+/* compress images */
+readF=f=>new Promise(r=>{if(!f)return r(null);const q=new FileReader();q.onload=e=>{const im=new Image();im.onload=()=>{const s=Math.min(1,900/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=im.width*s;c.height=im.height*s;c.getContext('2d').drawImage(im,0,0,c.width,c.height);r(c.toDataURL('image/jpeg',.72))};im.onerror=()=>r(e.target.result);im.src=e.target.result};q.readAsDataURL(f)});
+
+/* ===== HOURGLASS TIMER ===== */
+let tmode='sw',phase='f',lastMin=0,flipping=false,logged=0;const FD=25*6e4,BD=5*6e4;
+$('p-timer').innerHTML=`<div class="card"><h2>${ic('timer')}বালিঘড়ি টাইমার</h2>
+<div class="moods" style="justify-content:center"><button class="chip on" id="mSw" onclick="setMode('sw')">⏱ স্টপওয়াচ</button><button class="chip" id="mPo" onclick="setMode('po')">🍅 পোমোডোরো ২৫/৫</button></div>
+<div id="phase" class="phase"></div>
+<svg id="hg" class="hg" viewBox="0 0 120 200"><defs><linearGradient id="sg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd166"/><stop offset="1" stop-color="#ff9f43"/></linearGradient><clipPath id="ct"><path d="M20 14H100C100 60 68 88 62 100H58C52 88 20 60 20 14Z"/></clipPath><clipPath id="cb"><path d="M58 100H62C68 112 100 140 100 186H20C20 140 52 112 58 100Z"/></clipPath></defs>
+<g clip-path="url(#ct)"><rect id="st" x="20" width="80" fill="url(#sg)"/></g><g clip-path="url(#cb)"><rect id="sb" x="20" width="80" fill="url(#sg)"/></g>
+<line id="sm" x1="60" x2="60" y1="100" y2="100" stroke="#ffd166" stroke-width="2.2" stroke-dasharray="3 4"/>
+<path d="M20 14H100C100 60 68 88 62 100C68 112 100 140 100 186H20C20 140 52 112 58 100C52 88 20 60 20 14Z" fill="rgba(255,255,255,.06)" stroke="rgba(255,255,255,.75)" stroke-width="3" stroke-linejoin="round"/>
+<rect x="10" y="5" width="100" height="9" rx="4.5" fill="#8b6cff"/><rect x="10" y="186" width="100" height="9" rx="4.5" fill="#ff6ec7"/></svg>
+<div class="clock" id="clock" style="font-size:clamp(34px,8vw,54px);margin:4px 0">00:00:00.00</div><div id="ring" hidden></div>
+<div class="row" style="justify-content:center"><button class="btn teal" id="sBtn" onclick="tgl()">${ic('play')}শুরু</button><button class="btn ghost" onclick="lap()">${ic('flag')}ল্যাপ</button><button class="btn ghost" onclick="rst()">${ic('reset')}রিসেট</button></div>
+<ol class="laps" id="laps"></ol></div>`;
+const hgSet=(id,o)=>{const e=$(id);for(const k in o)e.setAttribute(k,o[k])};
+function sand(f){f=Math.max(0,Math.min(1,f));hgSet('st',{y:14+86*f,height:86*(1-f)+.5});hgSet('sb',{y:186-86*f,height:86*f+.5});hgSet('sm',{y2:186-86*f,opacity:(rt&&f<.995&&!flipping)?1:0})}
+function flip(){if(flipping)return;flipping=true;const g=$('hg');g.style.transition='transform .9s cubic-bezier(.6,-.25,.3,1.2)';g.style.transform='rotate(180deg)';setTimeout(()=>{g.style.transition='none';g.style.transform='';flipping=false},950)}
+function dur(){return phase==='f'?FD:BD}
+function beep(){try{const a=new (window.AudioContext||window.webkitAudioContext)(),o=a.createOscillator(),g=a.createGain();o.connect(g);g.connect(a.destination);o.frequency.value=660;g.gain.setValueAtTime(.15,a.currentTime);g.gain.exponentialRampToValueAtTime(.001,a.currentTime+.8);o.start();o.stop(a.currentTime+.8)}catch(e){}}
+function logDelta(){const c=now();if(tmode==='sw'||phase==='f'){const dm=(c-logged)/6e4;if(dm>0){const k=dk();X.log[k]=(X.log[k]||0)+dm;if(dm>=.5)X.act[k]=1}}logged=c}
+function phLbl(){$('phase').innerHTML=tmode==='sw'?'প্রতি মিনিটে বালিঘড়ি উল্টে যাবে':(phase==='f'?'<b>ফোকাস</b> · ২৫ মিনিট':'<b>বিরতি</b> · ৫ মিনিট')+` · আজ ${bn(X.pomoN)} সেশন`}
+function paint(){const e=now();let f;
+ if(tmode==='sw'){const m=Math.floor(e/6e4);if(rt&&m>lastMin){lastMin=m;flip()}f=(e%6e4)/6e4;$('clock').textContent=fmt(e)}
+ else{if(rt&&e>=dur())return complete();f=e/dur();$('clock').textContent=fmt(Math.max(0,dur()-e))}
+ sand(flipping?1:f);$('hg').classList.toggle('run',!!rt);rStxLite()}
+function complete(){logDelta();beep();confetti(innerWidth/2,innerHeight/3,60);if(phase==='f'){X.pomoN++;toast('ফোকাস শেষ! বিরতি নিন ☕')}else toast('বিরতি শেষ, আবার শুরু! 🍅');phase=phase==='f'?'b':'f';el=0;t0=Date.now();logged=0;flip();phLbl()}
+function tgl(){if(rt){clearInterval(rt);rt=null;el+=Date.now()-t0;logDelta();$('sBtn').innerHTML=ic('play')+'চালু'}else{t0=Date.now();rt=setInterval(paint,30);$('sBtn').innerHTML=ic('timer')+'থামুন'}paint()}
+function rst(){if(el||rt)logDelta();clearInterval(rt);rt=null;el=0;laps=[];logged=0;lastMin=0;$('laps').innerHTML='';$('sBtn').innerHTML=ic('play')+'শুরু';phLbl();paint();rStx()}
+function setMode(m){rst();tmode=m;phase='f';$('mSw').classList.toggle('on',m==='sw');$('mPo').classList.toggle('on',m==='po');phLbl();paint()}
+
+/* ===== TOUR+ ===== */
+const CAT=[['খাবার','#ff6ec7'],['থাকা','#8b6cff'],['যাতায়াত','#2ee6d6'],['কেনাকাটা','#ffd166'],['অন্যান্য','#3ddc97']];
+function calc(t){const paid={},owe={};t.mem.forEach(m=>{paid[m]=0;owe[m]=0});t.exp.forEach(e=>{paid[e.by]=(paid[e.by]||0)+e.amt;const sp=e.sp&&e.sp.length?e.sp:t.mem;sp.forEach(m=>owe[m]=(owe[m]||0)+e.amt/sp.length)});
+ const bal=t.mem.map(m=>[m,(paid[m]||0)-(owe[m]||0)]),cr=bal.filter(b=>b[1]>.5).map(b=>[...b]).sort((a,b)=>b[1]-a[1]),db=bal.filter(b=>b[1]<-.5).map(b=>[b[0],-b[1]]).sort((a,b)=>b[1]-a[1]),tx=[];let i=0,j=0;
+ while(i<db.length&&j<cr.length){const a=Math.min(db[i][1],cr[j][1]);tx.push([db[i][0],cr[j][0],a]);db[i][1]-=a;cr[j][1]-=a;if(db[i][1]<.5)i++;if(cr[j][1]<.5)j++}return{paid,owe,bal,tx}}
+function rTour(){const t=cur(),a=$('tArea');
+ if(!t){a.innerHTML='<div class="card"><p class="empty">একটি ট্যুর তৈরি করুন</p></div>';return}
+ t.chk=t.chk||[];const c=calc(t),tot=t.exp.reduce((s,e)=>s+e.amt,0),sh=t.mem.length?tot/t.mem.length:0,bp=t.budget?tot/t.budget*100:0;
+ const mRows=t.mem.map(m=>`<div class="stat"><span>${esc(m)}</span><span>দিয়েছেন ৳${bn(Math.round(c.paid[m]||0))} · ভাগ ৳${bn(Math.round(c.owe[m]||0))}</span></div><div class="bar"><div data-w="${tot?Math.min(100,(c.paid[m]||0)/tot*100):0}"></div></div>`).join('')||'<p class="empty">কোনো সদস্য নেই</p>';
+ const eRows=t.exp.map(e=>`<tr><td>${esc(e.title)}</td><td>${esc(e.cat||'অন্যান্য')}</td><td>${esc(e.by)}${e.sp&&e.sp.length?' <small>('+bn(e.sp.length)+' জন)</small>':''}</td><td>৳${bn(e.amt)}</td><td><button class="btn ghost sm" onclick="delE(${e.id})">${ic('x')}</button></td></tr>`).join('')||'<tr><td colspan="5" class="empty">কোনো খরচ নেই</td></tr>';
+ const bc={};t.exp.forEach(e=>{const k=e.cat||'অন্যান্য';bc[k]=(bc[k]||0)+e.amt});let acc=0;const seg=CAT.filter(k=>bc[k[0]]).map(k=>{const s=acc/tot*100;acc+=bc[k[0]];return `${k[1]} ${s}% ${acc/tot*100}%`}).join(',');
+ const col=bp>=100?'#ff4d6d':bp>=80?'#ffd166':'#3ddc97';
+ a.innerHTML=`<div class="g2"><div class="card"><h2>${ic('trip')}সদস্য</h2><div class="row"><input id="mN" placeholder="নাম"><button class="btn nf sm" onclick="addM()">যোগ</button></div>${mRows}</div>
+ <div class="card"><h2>${ic('spark')}হিসাব</h2><div class="total">৳${tot}</div><p style="color:var(--mu);margin-top:6px">গড় ভাগ ৳${bn(sh.toFixed(0))}</p><div class="row" style="margin-top:10px"><input id="bG" type="number" placeholder="বাজেট লিমিট (৳)" value="${t.budget||''}" onchange="cur().budget=+this.value;rTour()"></div>${t.budget?`<div class="bud"><i style="width:${Math.min(100,bp)}%;background:${col}"></i></div><small style="color:${col}">${bn(Math.round(bp))}% খরচ${bp>=100?' · বাজেট ছাড়িয়েছে!':bp>=80?' · সীমার কাছে':''}</small>`:''}</div></div>
+ <div class="card"><h2>${ic('pen')}খরচ যোগ</h2><div class="row"><input id="eT" placeholder="খরচের নাম"><input id="eA" type="number" placeholder="টাকা"><select id="eB">${t.mem.map(m=>`<option>${esc(m)}</option>`).join('')||'<option>আগে সদস্য যোগ করুন</option>'}</select><select id="eC">${CAT.map(k=>`<option>${k[0]}</option>`).join('')}</select></div>
+ <div class="epw"><small style="color:var(--mu)">কারা ভাগ করবে:</small>${t.mem.map(m=>`<label><input type="checkbox" class="ep" value="${esc(m)}" checked>${esc(m)}</label>`).join('')}</div><button class="btn" onclick="addE()">${ic('plus')}যোগ</button>
+ <div style="overflow-x:auto;margin-top:12px"><table><tr><th>খরচ</th><th>ধরন</th><th>কে দিলেন</th><th>টাকা</th><th></th></tr>${eRows}</table></div></div>
+ <div class="g2"><div class="card"><h2>${ic('flash')}কে কাকে দেবে</h2>${c.tx.map(x=>`<div class="sett"><b>${esc(x[0])}</b> → <b>${esc(x[1])}</b> কে ৳${bn(Math.round(x[2]))}</div>`).join('')||'<p class="empty">সব মিটে গেছে 🎉</p>'}<button class="btn teal sm" onclick="shareT()">${ic('up')}শেয়ার করুন</button></div>
+ <div class="card"><h2>${ic('spark')}খরচের ধরন</h2>${tot?`<div class="row"><div class="pie" style="background:conic-gradient(${seg})"></div><div class="lg2">${CAT.filter(k=>bc[k[0]]).map(k=>`<span><i style="background:${k[1]}"></i>${k[0]} ৳${bn(bc[k[0]])}</span>`).join('')}</div></div>`:'<p class="empty">খরচ যোগ করুন</p>'}</div></div>
+ <div class="card"><h2>${ic('check')}ট্যুর চেকলিস্ট</h2><div class="row"><input id="cN" placeholder="কী নিতে হবে?" onkeydown="if(event.key==='Enter')addChk()"><button class="btn nf sm" onclick="addChk()">যোগ</button></div>${t.chk.map(x=>`<div class="chk ${x.d?'d':''}"><input type="checkbox" ${x.d?'checked':''} onchange="togChk(${x.id})"><span>${esc(x.n)}</span><button class="btn ghost sm" onclick="delChk(${x.id})">${ic('x')}</button></div>`).join('')||'<p class="empty">তালিকা খালি</p>'}</div>`;
+ requestAnimationFrame(()=>document.querySelectorAll('.bar>div').forEach(b=>b.style.width=b.dataset.w+'%'));
+ document.querySelectorAll('.total').forEach(el=>{const v=tot,s0=performance.now();(function s(n){const k=Math.min(1,(n-s0)/800);el.textContent='৳'+bn(Math.round(v*(1-Math.pow(1-k,3))));if(k<1)requestAnimationFrame(s)})(s0)})}
+function addM(){const t=cur(),n=$('mN').value.trim();if(!t||!n)return toast('নাম দিন');t.mem.push(n);rTour()}
+function addE(){const t=cur(),title=$('eT').value.trim(),amt=+$('eA').value,by=$('eB').value;if(!t||!title||!amt||!t.mem.length)return toast('তথ্য দিন');let sp=[...document.querySelectorAll('.ep:checked')].map(x=>x.value);if(!sp.length)return toast('অন্তত একজন বেছে নিন');if(sp.length===t.mem.length)sp=null;t.exp.push({id:nid(),title,amt,by,cat:$('eC').value,sp});rTour();toast('খরচ যোগ')}
+function addChk(){const t=cur(),v=$('cN').value.trim();if(!v)return;t.chk.push({id:nid(),n:v,d:false});rTour();$('cN').focus()}
+function togChk(id){const x=cur().chk.find(c=>c.id===id);x.d=!x.d;rTour()}function delChk(id){const t=cur();t.chk=t.chk.filter(c=>c.id!==id);rTour()}
+function shareT(){const t=cur(),c=calc(t),tot=t.exp.reduce((s,e)=>s+e.amt,0);const tx=`${t.name}\nমোট খরচ ৳${tot}\n`+(c.tx.map(x=>`${x[0]} → ${x[1]} কে ৳${Math.round(x[2])}`).join('\n')||'সব মিটে গেছে');if(navigator.share)navigator.share({text:tx}).catch(()=>{});else{try{navigator.clipboard.writeText(tx);toast('কপি হয়েছে, হোয়াটসঅ্যাপে পেস্ট করুন')}catch(e){toast(tx)}}}
+
+/* ===== STUDY+ ===== */
+(function(){$('p-study').insertAdjacentHTML('afterbegin','<div class="card" id="stx"></div>')})();
+const streak=()=>{let n=0,d=new Date();if(!X.act[dk(d)])d=new Date(Date.now()-864e5);while(X.act[dk(d)]){n++;d=new Date(d.getTime()-864e5)}return n};
+function rStxLite(){}
+function rStx(){const all=D.subs.flatMap(s=>s.tp),rem=all.filter(t=>!t.done).length,e=X.exam,days=e?Math.ceil((new Date(e.d+'T00:00')-new Date(dk()+'T00:00'))/864e5):null,wk=[...Array(7)].map((_,i)=>{const d=new Date(Date.now()-864e5*(6-i));return[d.toLocaleDateString('bn-BD',{weekday:'short'}),Math.round(X.log[dk(d)]||0)]}),mx=Math.max(30,...wk.map(w=>w[1])),s=streak();
+ $('stx').innerHTML=`<h2>${ic('flash')}পরীক্ষা ও অভ্যাস</h2><div class="g2"><div><div class="row"><input id="xN" placeholder="পরীক্ষার নাম" value="${e?esc(e.n):''}"><input id="xD" type="date" value="${e?e.d:''}"><button class="btn nf sm" onclick="setExam()">সেট</button></div>${e?(days>=0?`<div class="big">আর ${bn(days)} দিন</div><p style="color:var(--mu)">${esc(e.n)} · ${rem&&days?`দিনে গড়ে <b style="color:var(--c)">${bn(Math.ceil(rem/Math.max(1,days)))}টি</b> টপিক পড়তে হবে (${bn(rem)}টি বাকি)`:rem?'আজই পরীক্ষা!':'সব টপিক শেষ 🎉'}</p>`:'<p class="empty">পরীক্ষার তারিখ পেরিয়ে গেছে</p>'):'<p class="empty">তারিখ দিন, হিসাব আমি করে দেব</p>'}</div>
+ <div><div class="big">🔥 ${bn(s)} দিনের স্ট্রিক</div><p style="color:var(--mu)">আজ ফোকাস: ${bn(Math.round(X.log[dk()]||0))} মিনিট</p></div></div><div class="wb">${wk.map(w=>`<div><i style="height:${w[1]/mx*80}%"></i>${bn(w[1])}মি<br>${w[0]}</div>`).join('')}</div><small style="color:var(--mu)">গত ৭ দিনের পড়ার সময় (টাইমার থেকে)</small>`}
+function setExam(){const n=$('xN').value.trim(),d=$('xD').value;if(!n||!d)return toast('নাম ও তারিখ দিন');X.exam={n,d};rStx()}
+const _tog=tog;tog=function(id){_tog(id);X.act[dk()]=1;rStx()};const _aw=addWeek;addWeek=function(){_aw();X.act[dk()]=1;rStx()};const _at=addTopic;addTopic=function(){_at();rStx()};
+
+/* ===== QUIZ+ ===== */
+let QS=[],qmode='quiz',wr=[],used=false,qt=null,tl=15,fi=0,fl=false,retry=false;
+function startQ(set){retry=!!set;QS=set||D.qs.slice();qi2=0;qs=0;wr=[];used=false;fi=0;fl=false;rQuiz()}
+function qm(m){qmode=m;rQuiz()}
+function rQuiz(){clearInterval(qt);const a=$('quiz');if(!D.qs.length){a.innerHTML='<p class="empty">কোনো প্রশ্ন নেই</p>';return}
+ if(!retry&&qi2===0)QS=D.qs.slice();
+ const head=`<div class="moods"><button class="chip ${qmode==='quiz'?'on':''}" onclick="qm('quiz')">🎯 কুইজ</button><button class="chip ${qmode==='fc'?'on':''}" onclick="qm('fc')">🗂 ফ্ল্যাশকার্ড</button></div>`,lb=X.lb.length?`<h3 style="margin-top:16px">🏆 লিডারবোর্ড</h3>`+[...X.lb].sort((a,b)=>b.s/b.t-a.s/a.t).slice(0,5).map((l,i)=>`<div class="mi"><span>${['🥇','🥈','🥉','4.','5.'][i]} ${esc(l.n)}</span><b class="d">${bn(l.s)}/${bn(l.t)}</b></div>`).join(''):'';
+ if(qmode==='fc'){const q=D.qs[fi%D.qs.length];a.innerHTML=head+`<small style="color:var(--mu)">কার্ড ${bn(fi%D.qs.length+1)}/${bn(D.qs.length)} · ক্লিক করে উল্টান</small><div class="fc ${fl?'f':''}" onclick="fl=!fl;rQuiz()">${fl?'✅ '+esc(q.o[q.a]):esc(q.q)}</div><div class="row" style="justify-content:center"><button class="btn ghost" onclick="fi=(fi+D.qs.length-1)%D.qs.length;fl=false;rQuiz()">← আগে</button><button class="btn" onclick="fi++;fl=false;rQuiz()">পরে →</button></div>`+lb;return}
+ if(qi2>=QS.length){if(qs===QS.length&&QS.length)setTimeout(()=>confetti(innerWidth/2,innerHeight/3,90),200);a.innerHTML=head+`<div class="score">স্কোর ${bn(qs)} / ${bn(QS.length)}</div><div class="row" style="justify-content:center">${retry?'':`<input id="lbN" placeholder="নাম" value="${esc(myName)}"><button class="btn teal nf" onclick="X.lb.push({n:$('lbN').value.trim()||'অতিথি',s:qs,t:QS.length});rQuiz();toast('স্কোর সেভ')">${ic('check')}সেভ</button>`}</div><div class="row" style="justify-content:center;margin-top:8px"><button class="btn" onclick="startQ()">${ic('reset')}আবার</button>${wr.length?`<button class="btn red" onclick="startQ(wr.slice())">ভুলগুলো আবার (${bn(wr.length)})</button>`:''}</div>`+lb;return}
+ const q=QS[qi2];tl=15;
+ a.innerHTML=head+`<div class="q"><div class="row" style="justify-content:space-between"><small style="color:var(--mu)">প্রশ্ন ${bn(qi2+1)}/${bn(QS.length)}${retry?' · ভুল রাউন্ড':''}</small><button class="btn ghost sm nf" id="hf" ${used?'disabled':''} onclick="half()">৫০:৫০</button></div><div class="tl"><i id="tb"></i></div><h3 style="margin:6px 0 8px">${esc(q.q)}</h3>${q.o.map((o,i)=>`<span class="opt" data-i="${i}" onclick="ans(${i},this)">${esc(o)}</span>`).join('')}</div>`;
+ qt=setInterval(()=>{tl-=.1;const b=$('tb');if(b)b.style.width=Math.max(0,tl/15*100)+'%';if(tl<=0){clearInterval(qt);const box=document.querySelector('.q');if(box&&!box.dataset.d){box.dataset.d=1;wr.push(q);box.querySelector(`[data-i="${q.a}"]`).classList.add('ok');toast('সময় শেষ ⏰');setTimeout(()=>{qi2++;rQuiz()},1100)}}},100)}
+function half(){if(used)return;used=true;$('hf').disabled=true;const q=QS[qi2];[...document.querySelectorAll('.q .opt')].filter(o=>+o.dataset.i!==q.a).sort(()=>Math.random()-.5).slice(0,2).forEach(o=>o.classList.add('gone'))}
+function ans(i,el){const q=QS[qi2],box=el.parentNode;if(box.dataset.d)return;box.dataset.d=1;clearInterval(qt);if(i===q.a){el.classList.add('ok');qs++;const r=el.getBoundingClientRect();confetti(r.left+r.width/2,r.top,24)}else{el.classList.add('no');box.querySelector(`[data-i="${q.a}"]`).classList.add('ok');wr.push(q)}setTimeout(()=>{qi2++;rQuiz()},1000)}
+
+/* ===== POLLS ===== */
+(function(){$('feed').insertAdjacentHTML('beforebegin',`<div class="card"><h2>${ic('check')}পোল</h2><input id="plQ" placeholder="প্রশ্ন, যেমন: পরের ট্যুর কোথায়?"><div class="row"><input id="plO" placeholder="অপশন কমা দিয়ে: সিলেট, বান্দরবান, সুন্দরবন"><button class="btn nf" onclick="addPoll()">তৈরি</button></div><div id="polls"></div></div>`)})();
+function addPoll(){const q=$('plQ').value.trim(),o=$('plO').value.split(/[,،]/).map(s=>s.trim()).filter(Boolean);if(!q||o.length<2)return toast('প্রশ্ন ও ২টি অপশন দিন');X.polls.unshift({id:nid(),q,o:o.map(t=>({t,v:0}))});$('plQ').value=$('plO').value='';rPolls()}
+function vote(id,i){const p=X.polls.find(x=>x.id===id);if(p.m===i)return;if(p.m!=null)p.o[p.m].v--;p.o[i].v++;p.m=i;rPolls()}
+function rPolls(){$('polls').innerHTML=X.polls.map(p=>{const t=p.o.reduce((s,o)=>s+o.v,0);return `<div class="pl"><b>${esc(p.q)}</b><div style="margin-top:8px">${p.o.map((o,i)=>`<div class="o ${p.m===i?'m':''}" onclick="vote(${p.id},${i})"><i style="width:${t?o.v/t*100:0}%"></i><span>${esc(o.t)}</span><span>${bn(o.v)}</span></div>`).join('')}</div></div>`}).join('')}
+
+/* ===== GALLERY+ ===== */
+(function(){$('gC').insertAdjacentHTML('afterend',`<input id="gA" placeholder="অ্যালবাম (যেমন: কক্সবাজার)"><div class="row"><button class="btn ghost sm nf" id="ssB" onclick="slide()">▶ স্লাইডশো</button></div>`);$('gCap').insertAdjacentHTML('beforebegin','<div class="moods" id="albs"></div>')})();
+let ssT=null;function slide(){if(ssT){clearInterval(ssT);ssT=null;$('ssB').textContent='▶ স্লাইডশো';closeLb();return}if(!D.imgs.length)return toast('ছবি নেই');$('ssB').textContent='⏸ থামান';openLb();ssT=setInterval(()=>goI(gi+1),2600)}
+function albs(){const A=[...new Set((ALL||D.imgs).map(i=>i.al).filter(Boolean))];$('albs').innerHTML=A.length?`<button class="chip ${ALL?'':'on'}" onclick="setAlb('')">সব</button>`+A.map(a=>`<button class="chip ${ALL&&D.imgs[0]&&D.imgs[0].al===a?'on':''}" onclick="setAlb('${esc(a)}')">📁 ${esc(a)}</button>`).join(''):''}
+function setAlb(a){const base=ALL||D.imgs;if(!a){D.imgs=base;ALL=null}else{ALL=base;D.imgs=base.filter(i=>i.al===a)}gi=0;rGal()}
+const _rg=rGal;rGal=function(){_rg();albs()};
+async function addImgs(list){const files=[...list].filter(f=>f.type.startsWith('image/'));if(!files.length)return toast('ছবি বেছে নিন');if(ALL){D.imgs=ALL;ALL=null}const cap=$('gC').value.trim(),al=$('gA').value.trim();for(const f of files)D.imgs.push({id:nid(),src:await readF(f),cap:cap||f.name.replace(/\.[^.]+$/,''),al});$('gC').value='';$('gF').value='';rGal();toast(bn(files.length)+'টি ছবি যোগ হয়েছে')}
+const _di=delI;delI=function(id){if(ALL){ALL=ALL.filter(i=>i.id!==id)}_di(id)};
+
+/* ===== DATES+ ===== */
+const today0=()=>new Date(dk()+'T00:00');
+function nxt(d){const o=new Date(d+'T00:00'),n=new Date(today0().getFullYear(),o.getMonth(),o.getDate());if(n<today0())n.setFullYear(n.getFullYear()+1);return Math.round((n-today0())/864e5)}
+function rDates(){$('dList').innerHTML=[...D.dates].sort((a,b)=>nxt(a.d)-nxt(b.d)).map(d=>{const n=nxt(d.d);return `<div class="mi"><div><div class="d">${fd(d.d+'T00:00')} · ${n===0?'<b style="color:var(--ok)">আজই! 🎉</b>':'আর '+bn(n)+' দিন'}</div><div>${esc(d.t)}</div>${d.x?`<small style="color:var(--mu)">${esc(d.x)}</small>`:''}</div><button class="btn red sm" onclick="delD(${d.id})">মুছুন</button></div>`}).join('')||'<p class="empty">কোনো স্মরণীয় দিন নেই</p>'}
+(function(){$('p-dates').insertAdjacentHTML('afterbegin',`<div class="card"><h2>${ic('spark')}আজকের দিনে</h2><div id="otd"></div><button class="btn ghost sm" style="margin-top:8px" onclick="askN()">🔔 রিমাইন্ডার চালু করুন</button></div>`)})();
+function rOtd(){const n=new Date(),md=dk(n).slice(5),Y=n.getFullYear(),L=[];const add=(d,t,k)=>{const y=new Date(d).getFullYear();if(dk(new Date(d)).slice(5)===md&&y<Y)L.push(`${bn(Y-y)} বছর আগে · ${k} ${esc(t)}`)};D.dates.forEach(x=>add(x.d+'T00:00',x.t,'🎉'));D.posts.forEach(x=>add(x.d,x.t||'ছবি পোস্ট','💬'));D.weeks.forEach(x=>add(x.d,x.n,'📖'));$('otd').innerHTML=L.map(l=>`<div class="mi">${l}</div>`).join('')||'<p class="empty">আজকের দিনে এখনো কোনো স্মৃতি নেই</p>'}
+function askN(){if(!('Notification' in window))return toast('এই ব্রাউজারে সমর্থিত নয়');Notification.requestPermission().then(p=>{toast(p==='granted'?'চালু হয়েছে (পেজ খোলা থাকলে কাজ করবে)':'অনুমতি দেওয়া হয়নি');remind()})}
+function remind(){if(!('Notification' in window)||Notification.permission!=='granted')return;D.dates.forEach(d=>{const n=nxt(d.d),k=d.id+dk();if(n<=1&&!X.nt[k]){X.nt[k]=1;new Notification(n?'কাল: '+d.t:'আজ: '+d.t,{body:d.x||'স্মরণীয় দিন'})}})}
+const _ad=addDate;addDate=function(){_ad();rOtd()};setInterval(remind,36e5);
+
+/* ===== BOOT ===== */
+async function boot(){
+  let s=null;
+  try{
+    const m=await fetch('/api/me');
+    if(m.status===401){location.href='/login.html';return}
+    ME=(await m.json()).username;
+    const r=await fetch('/api/data');
+    if(!r.ok)throw 0;
+    s=(await r.json()).data;
+  }catch(e){toast('সার্ভার থেকে ডেটা আনা যায়নি, পেজ রিফ্রেশ করুন');return}
+  if(s){Object.assign(D,s.D);Object.assign(X,s.X);uid=s.uid||uid;TH=s.TH||'dark';FZ=s.FZ||1;if(D.posts.length||D.imgs.length)toast('আপনার ডেটা ফিরে এসেছে')}
+  lastSent=JSON.stringify(payload());
+  READY=true;
+  applyTheme();phLbl();renderAll();remind();
+  document.querySelector('.tools').insertAdjacentHTML('beforeend',`<span class="btn ghost sm" style="cursor:default">👤 ${esc(ME)}</span><button class="btn red sm" onclick="logout()">লগআউট</button>`);
+  setInterval(save,3000);
+  addEventListener('beforeunload',()=>save(true));
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)save()});
+}
+boot();
+</script>
+</body>
+</html>

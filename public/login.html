@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>লগইন · কিংকর্তব্যবিমূঢ়</title>
+<link rel="stylesheet" href="/css/auth.css">
+</head>
+<body>
+<div class="orb o1"></div><div class="orb o2"></div>
+
+<main class="box">
+  <h1>কিংকর্তব্যবিমূঢ়</h1>
+  <p class="sub">নিজের জায়গায় ঢুকতে লগইন করুন</p>
+
+  <div class="switch">
+    <button type="button" id="tabLogin" class="on">লগইন</button>
+    <button type="button" id="tabReg">নতুন একাউন্ট</button>
+  </div>
+
+  <form id="form" autocomplete="on">
+    <label for="u">ইউজারনেম</label>
+    <input id="u" name="username" autocomplete="username" required minlength="3" maxlength="20" placeholder="যেমন: rahim_01">
+
+    <label for="p">পাসওয়ার্ড</label>
+    <div class="pw">
+      <input id="p" name="password" type="password" autocomplete="current-password" required minlength="6" placeholder="কমপক্ষে ৬ অক্ষর">
+      <button type="button" id="eye" aria-label="পাসওয়ার্ড দেখান">দেখান</button>
+    </div>
+
+    <div id="p2wrap" hidden>
+      <label for="p2">পাসওয়ার্ড আবার দিন</label>
+      <input id="p2" type="password" autocomplete="new-password" minlength="6" placeholder="একই পাসওয়ার্ড">
+    </div>
+
+    <p id="msg" role="alert"></p>
+    <button class="go" id="go" type="submit">লগইন</button>
+  </form>
+</main>
+
+<script src="/js/auth.js"></script>
+</body>
+</html>
